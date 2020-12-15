@@ -184,6 +184,11 @@ class Field {
   const Field([this.value]);
 }
 
+@immutable
+class Fields {
+  const Fields();
+}
+
 /// Named replacement in a URL path segment.
 ///
 /// Path parameters may not be `null`.
