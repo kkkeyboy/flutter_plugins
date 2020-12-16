@@ -25,6 +25,27 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
+
+
+def bundleconfigProperties = new Properties()
+def bundleconfigPropertiesFile = rootProject.file('bundleConfig.properties')
+if (bundleconfigPropertiesFile.exists()) {
+    bundleconfigPropertiesFile.withReader('UTF-8') { reader ->
+        bundleconfigProperties.load(reader)
+    }
+}
+
+def appId = bundleconfigProperties.getProperty('applicationId')
+if (appId == null) {
+    appId = 'com.jone.simple.app'
+}
+
+def appName = bundleconfigProperties.getProperty('appName')
+if (appName == null) {
+    appName = 'App'
+}
+//appName = new String(appName.getBytes("iso8859-1"), "UTF-8")
+
 android {
     compileSdkVersion 28
 
@@ -38,20 +59,47 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.flutter_libs"
-        minSdkVersion 16
+        applicationId appId
+        minSdkVersion 24
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
 
-    buildTypes {
+
+    signingConfigs {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            keyAlias bundleconfigProperties['keyAlias']
+            keyPassword bundleconfigProperties['keyPassword']
+            storeFile file(bundleconfigProperties['storeFile'])
+            storePassword bundleconfigProperties['storePassword']
         }
     }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            resValue "string", "appName", appName
+            buildConfigField 'String', 'NAME', '"' + appName + '"'
+        }
+        debug {
+            resValue "string", "appName", appName
+            buildConfigField 'String', 'NAME', '"' + appName + '"'
+        }
+    }
+
+    //配置打包出的apk名称,eg: dax-v1.0_20180318-debug.apk
+     applicationVariants.all { variant ->
+         if (variant.buildType.name == 'release') {
+             variant.outputs.all {
+                 def apkName = "${appName}_v${variant.versionName}-${variant.versionCode}_${variant.buildType.name}"
+                 if (!variant.flavorName.isEmpty()) {
+                     apkName += "_${variant.flavorName}"
+                 }
+                 outputFileName = "${apkName}_${new Date().format("MMdd-HH-mm-ss")}.apk"
+             }
+         }
+     }
+
 }
 
 flutter {
