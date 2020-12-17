@@ -24,6 +24,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "autoBySystem" : MessageLookupByLibrary.simpleMessage("跟随系统"),
     "emptyTxtPlace" : MessageLookupByLibrary.simpleMessage("--"),
     "retry" : MessageLookupByLibrary.simpleMessage("重试"),
+    "splashSkip" : MessageLookupByLibrary.simpleMessage("跳过"),
     "viewStateButtonRefresh" : MessageLookupByLibrary.simpleMessage("刷新一下"),
     "viewStateButtonRetry" : MessageLookupByLibrary.simpleMessage("重试"),
     "viewStateMessageEmpty" : MessageLookupByLibrary.simpleMessage("空空如也"),

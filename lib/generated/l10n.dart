@@ -115,6 +115,16 @@ class S {
     );
   }
 
+  /// `跳过`
+  String get splashSkip {
+    return Intl.message(
+      '跳过',
+      name: 'splashSkip',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `--`
   String get emptyTxtPlace {
     return Intl.message(

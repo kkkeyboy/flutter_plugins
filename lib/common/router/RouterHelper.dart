@@ -13,7 +13,7 @@ class RouterHelper {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case RouteName.SPLASH:
-        return NoAnimRouteBuilder(Text("SplashPage()"));
+        return NoAnimRouteBuilder(SplashPage());
       case RouteName.MAIN:
         return CupertinoPageRoute(builder: (_) => Text("MainPage()"));
 
@@ -21,10 +21,14 @@ class RouterHelper {
         return CupertinoPageRoute(
             builder: (_) => Scaffold(
                   body: Center(
-                    child: Text('''
-            404
+                    child: Text(
+                      '''
+404
 No route defined for ${settings.name}
-                    '''),
+                    ''',
+                      style: TextStyle(color: Colors.red, fontSize: 33),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ));
     }

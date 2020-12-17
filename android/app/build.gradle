@@ -26,7 +26,6 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 
-
 def bundleconfigProperties = new Properties()
 def bundleconfigPropertiesFile = rootProject.file('bundleConfig.properties')
 if (bundleconfigPropertiesFile.exists()) {
@@ -64,6 +63,8 @@ android {
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+
+        resValue "string", "appName", appName
     }
 
 
@@ -78,27 +79,42 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            resValue "string", "appName", appName
-            buildConfigField 'String', 'NAME', '"' + appName + '"'
         }
         debug {
-            resValue "string", "appName", appName
-            buildConfigField 'String', 'NAME', '"' + appName + '"'
         }
     }
 
+    flavorDimensions "app"
+    productFlavors {
+        production {
+            dimension "app"
+        }
+        development {
+            dimension "app"
+            versionNameSuffix "-dev"
+            applicationIdSuffix ".dev"
+        }
+    }
+
+    productFlavors.all {
+        flavor ->
+            if (flavor.applicationIdSuffix != null) {
+                resValue "string", "appName", appName + flavor.applicationIdSuffix
+            }
+    }
+
     //配置打包出的apk名称,eg: dax-v1.0_20180318-debug.apk
-     applicationVariants.all { variant ->
-         if (variant.buildType.name == 'release') {
-             variant.outputs.all {
-                 def apkName = "${appName}_v${variant.versionName}-${variant.versionCode}_${variant.buildType.name}"
-                 if (!variant.flavorName.isEmpty()) {
-                     apkName += "_${variant.flavorName}"
-                 }
-                 outputFileName = "${apkName}_${new Date().format("MMdd-HH-mm-ss")}.apk"
-             }
-         }
-     }
+    applicationVariants.all { variant ->
+        if (variant.buildType.name == 'release') {
+            variant.outputs.all {
+                def apkName = "${appName}_v${variant.versionName}-${variant.versionCode}_${variant.buildType.name}"
+                if (!variant.flavorName.isEmpty()) {
+                    apkName += "_${variant.flavorName}"
+                }
+                outputFileName = "${apkName}_${new Date().format("MMdd-HH-mm-ss")}.apk"
+            }
+        }
+    }
 
 }
 

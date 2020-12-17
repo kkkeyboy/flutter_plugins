@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-export 'package:codes/common/extension/widget_ex.dart';
+export 'package:codes/common/extension/WidgetEx.dart';
 
 class ThemeColors {
   //前景色

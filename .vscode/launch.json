@@ -5,33 +5,28 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "codes",
+            "name": "App.Dev",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "flutterMode": "debug",
+            "args": [
+                "--flavor",
+                "development",
+                "-t",
+                "lib/main_dev.dart"
+            ]
         },
         {
-            "name": "annotation",
-            "cwd": "plugins\\annotation",
+            "name": "App",
             "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "flutter_base",
-            "cwd": "plugins\\flutter_base",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "generator",
-            "cwd": "plugins\\generator",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "json_model",
-            "cwd": "plugins\\json_model",
-            "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "flutterMode": "debug",
+            "args": [
+                "-t",
+                "lib/main.dart",
+                "--flavor",
+                "production"
+            ]
         }
     ]
 }

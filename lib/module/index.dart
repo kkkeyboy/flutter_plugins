@@ -1,1 +1,1 @@
-export 'page_templete.dart';
+export 'splash/ui/SplashPage.dart';
