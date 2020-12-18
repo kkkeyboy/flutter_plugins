@@ -89,7 +89,7 @@ android {
         production {
             dimension "app"
         }
-        development {
+        dev {
             dimension "app"
             versionNameSuffix "-dev"
             applicationIdSuffix ".dev"
