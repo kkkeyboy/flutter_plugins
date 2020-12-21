@@ -1,9 +1,10 @@
-import 'package:flutter_base/flutter_base.dart';
-import 'package:codes/common/http/UrlsConfig.dart';
-
 import 'DioFactory.dart';
+import 'services/MainApi.dart';
 
 class ApiControls {
-  
-  static Dio getApi() => DioFactory().getDio(UrlsConfig.API_HOST);
+  static MainApi _api;
+  static MainApi get api => _api;
+  static initMainApi(String hostUrl) {
+    _api = MainApi(DioFactory().getDio(hostUrl), baseUrl: hostUrl);
+  }
 }

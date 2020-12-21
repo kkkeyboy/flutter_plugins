@@ -15,7 +15,7 @@ class RouterHelper {
       case RouteName.SPLASH:
         return NoAnimRouteBuilder(SplashPage());
       case RouteName.MAIN:
-        return CupertinoPageRoute(builder: (_) => Text("MainPage()"));
+        return CupertinoPageRoute(builder: (_) => MainPage());
 
       default:
         return CupertinoPageRoute(

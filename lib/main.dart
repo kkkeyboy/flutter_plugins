@@ -16,11 +16,15 @@ import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
 
 import 'common/StorageManager.dart';
+import 'common/http/ApiControls.dart';
+import 'common/http/UrlsConfig.dart';
 import 'module/App.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await StorageManager.init();
+
+  ApiControls.initMainApi(UrlsConfig.API_HOST);
 
   //强制竖屏
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
