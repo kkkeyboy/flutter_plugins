@@ -22,7 +22,7 @@ dependencies:
   dio: 3.0.9 #网络请求
 
   back_button_interceptor: ^4.4.0 #返回键拦截器
-  pull_to_refresh: ^1.6.0 #下拉刷新、上拉加载更多
+  pull_to_refresh: 1.6.3 #下拉刷新、上拉加载更多
   qr_flutter: ^3.2.0
 
   crypto: 2.1.5 #hash

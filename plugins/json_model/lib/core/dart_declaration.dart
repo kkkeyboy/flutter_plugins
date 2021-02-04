@@ -105,24 +105,18 @@ class DartDeclaration {
     imports = LinkedHashSet<String>.from(imports).toList();
   }
 
-  static DartDeclaration fromKeyValue(key, val) {
+  static DartDeclaration fromKeyValue(key, val, {String fileName}) {
     var dartDeclaration = DartDeclaration();
-    dartDeclaration = fromCommand(
-      Commands.valueCommands,
-      dartDeclaration,
-      testSubject: val,
-      key: key,
-      value: val,
-    );
+    dartDeclaration = fromCommand(Commands.valueCommands, dartDeclaration, testSubject: val, key: key, value: val, fileName: fileName);
 
-    dartDeclaration = fromCommand(Commands.keyComands, dartDeclaration, testSubject: key, key: key, value: val);
+    dartDeclaration = fromCommand(Commands.keyComands, dartDeclaration, testSubject: key, key: key, value: val, fileName: fileName);
     if (dartDeclaration.type == null || dartDeclaration.name == null) {
       exit(0);
     }
     return dartDeclaration;
   }
 
-  static DartDeclaration fromCommand(List<Command> commandList, self, {dynamic testSubject, String key, dynamic value}) {
+  static DartDeclaration fromCommand(List<Command> commandList, self, {dynamic testSubject, String key, dynamic value, String fileName}) {
     var newSelf = self;
     for (var command in commandList) {
       if (testSubject is String) {
@@ -130,7 +124,7 @@ class DartDeclaration {
           if ((command.prefix != null && command.command != null && testSubject.startsWith(command.prefix + command.command)) ||
               (command.command != null && testSubject.startsWith(command.command))) {
             if (command.notprefix != null && !testSubject.startsWith(command.notprefix) || command.notprefix == null) {
-              newSelf = command.callback(self, testSubject, key: key, value: value);
+              newSelf = command.callback(self, testSubject, key: key, value: value, fileName: fileName);
               break;
             }
           }

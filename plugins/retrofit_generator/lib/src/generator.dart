@@ -392,31 +392,30 @@ class RetrofitGenerator extends GeneratorForAnnotation<retrofit.RestApi> {
           ).statement,
         );
         blocks.add(Code("""
-         } on DioError catch (e) {
-            return HanldeResultError.resultError(e);
-        }
-        if (response.data is DioError) {
+         if (response.data is DioError) {
             return HanldeResultError.resultError(response.data);
         }
-
-        final subDataResult = response.data[CommonData.FIELD_CONTENT];
+        final subDataResult = response.data[ResultDataConfig.config.FIELD_CONTENT];
+        final statusCode = "\${response.data[ResultDataConfig.config.FIELD_CODE]??''}";
+        if (ResultDataConfig.config.SUCCESS_CODE == statusCode) {
         """));
         if (_typeChecker(List).isExactlyType(returnType) || _typeChecker(BuiltList).isExactlyType(returnType)) {
           if (_isBasicType(innerReturnType)) {
             blocks.add(Code("final subData = subDataResult.cast<${_displayString(innerReturnType)}>();"));
           } else {
+            blocks.add(Code(" List<Banner> subData = [];"));
             switch (clientAnnotation.parser) {
               case retrofit.Parser.MapSerializable:
                 blocks.add(Code(
-                    "final subData = subDataResult.map((dynamic i) => ${_displayString(innerReturnType)}.fromMap(i as Map<String,dynamic>)).toList();"));
+                    "subDataResult.forEach((dynamic i) => subData.add(${_displayString(innerReturnType)}.fromMap(i as Map<String,dynamic>)));"));
                 break;
               case retrofit.Parser.JsonSerializable:
                 blocks.add(Code(
-                    "final subData = subDataResult.map((dynamic i) => ${_displayString(innerReturnType)}.fromJson(i as Map<String,dynamic>)).toList();"));
+                    "subDataResult.forEach((dynamic i) =>subData.add(${_displayString(innerReturnType)}.fromJson(i as Map<String,dynamic>)));"));
                 break;
               case retrofit.Parser.DartJsonMapper:
                 blocks.add(Code(
-                    "final subData = subDataResult.map((dynamic i) => JsonMapper.deserialize<${_displayString(innerReturnType)}>(i as Map<String,dynamic>)).toList();"));
+                    "subDataResult.forEach((dynamic i) =>subData.add(JsonMapper.deserialize<${_displayString(innerReturnType)}>(i as Map<String,dynamic>)));"));
                 break;
             }
           }
@@ -519,6 +518,15 @@ class RetrofitGenerator extends GeneratorForAnnotation<retrofit.RestApi> {
           blocks.add(
               Code("$returnAsyncWrapper new ResultData(response.data, response.statusCode, headers: response.headers,subData: subData);"));
         }
+        blocks.add(Code("""
+                  }
+                  else{
+         return new ResultData(response.data, response.statusCode,headers: response.headers, );
+      }
+        } catch (e) {
+            return HanldeResultError.resultError(e);
+        } 
+        """));
       }
       //不进行数据包裹
       else {
@@ -830,8 +838,6 @@ class RetrofitGenerator extends GeneratorForAnnotation<retrofit.RestApi> {
 
       return;
     }
-
-    print("Uuuu: fields->${_getAnnotations(m, retrofit.Fields)}");
 
     final fields = _getAnnotations(m, retrofit.Field).map((p, r) {
       final fieldName = r.peek("value")?.stringValue ?? p.displayName;

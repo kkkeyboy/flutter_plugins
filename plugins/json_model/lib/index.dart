@@ -74,10 +74,10 @@ class JsonModelRunner {
           final file = File(f.path);
           final outFolder = f.path.replaceFirst(srcDir, distDir);
           var dartPath = outFolder.replaceFirst(
-                fileExtension,
-                '.dart',
-                outFolder.length - fileExtension.length - 1,
-              );
+            fileExtension,
+            '.dart',
+            outFolder.length - fileExtension.length - 1,
+          );
           // print('f.path.replaceFirst(srcDir, distDir) :${f.path.replaceFirst(srcDir, distDir)}');
           // print('dartPath :${dartPath}');
           List basenameString = path.basename(f.path).split('.');

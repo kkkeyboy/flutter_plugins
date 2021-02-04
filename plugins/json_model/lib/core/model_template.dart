@@ -31,7 +31,7 @@ class ModelTemplates {
 import 'package:json_annotation/json_annotation.dart';
 $imports
 
-import 'package:treasure/common/http/CommonData.dart';
+import 'package:retrofit/retrofit.dart';
 
 part '$fileName.g.dart';
 

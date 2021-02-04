@@ -33,8 +33,13 @@ mixin BasePageMixin {
   final Color appBarLabelFgColor = null;
 
   PageConfigData getConfig(BuildContext context) {
-    return BasePageConfig.of(context)
-        .checkWith(bgColor: bgColor, bgImg: bgImg, appBarBgColor: appBarBgColor, appBarFgColor: appBarFgColor, hasBgImg: hasBgImg,appBarLabelFgColor:appBarLabelFgColor);
+    return BasePageConfig.of(context).checkWith(
+        bgColor: bgColor,
+        bgImg: bgImg,
+        appBarBgColor: appBarBgColor,
+        appBarFgColor: appBarFgColor,
+        hasBgImg: hasBgImg,
+        appBarLabelFgColor: appBarLabelFgColor);
   }
 
   @protected
@@ -104,9 +109,11 @@ mixin BasePageMixin {
   @protected
   Widget wrapBody(BuildContext context) => null;
 
+  @protected
+  Widget buildBodyOutside(BuildContext context, Widget body) => body;
+
   Widget buildImpl(BuildContext context) {
     initWithContext(context);
-
     var scaffold = new Scaffold(
       backgroundColor: Colors.transparent,
       appBar: buildAppBar(context),
@@ -117,7 +124,7 @@ mixin BasePageMixin {
           hideInputKeyboard(context);
         },
         // child: SafeArea(
-        child: wrapBody(context) ?? buildBody(context),
+        child: buildBodyOutside(context, wrapBody(context) ?? buildBody(context)),
         // ),
       ),
       bottomNavigationBar: buildBottomNavigationBar(context),
@@ -327,6 +334,8 @@ abstract class BaseLoadRefreshDataState<T extends BasePage, VM extends BaseLoadR
   Widget buildRefreshWithOutHeader(BuildContext context) => null;
   Widget buildRefreshWithOutFooter(BuildContext context) => null;
 
+  Widget buildRefreshOutside(BuildContext context) => buildRefreshWidget(context);
+
   Widget buildRefreshWidget(BuildContext context) {
     final refreshView = SmartRefresher(
       controller: viewModel.refreshController,
@@ -356,7 +365,7 @@ abstract class BaseLoadRefreshDataState<T extends BasePage, VM extends BaseLoadR
         switch (model.viewState) {
           case ViewState.busy:
             // model.refresh();
-            widget = model.hasData() ? buildRefreshWidget(context) : buildLoadingWidget(context);
+            widget = model.hasData() ? buildRefreshOutside(context) : buildLoadingWidget(context);
             break;
           case ViewState.empty:
             widget = buildEmptyWidget(context, emptyEnableReload);
@@ -365,7 +374,7 @@ abstract class BaseLoadRefreshDataState<T extends BasePage, VM extends BaseLoadR
             widget = buildErrorWidget(context, errorEnableReload);
             break;
           default:
-            widget = buildRefreshWidget(context);
+            widget = buildRefreshOutside(context);
             break;
         }
         return !showWithOutNoData ? widget : _buildWidgetWithOut(context, widget);
@@ -412,6 +421,7 @@ abstract class BaseLoadListDataState<T extends BasePage, VM extends BaseLoadList
 
   ScrollPhysics refreshPhysics() => null;
 
+  Widget buildRefreshOutside(BuildContext context) => buildRefreshWidget(context);
   Widget buildRefreshWidget(BuildContext context) {
     final refreshView = SmartRefresher(
       controller: viewModel.refreshController,
@@ -462,7 +472,7 @@ abstract class BaseLoadListDataState<T extends BasePage, VM extends BaseLoadList
         switch (model.viewState) {
           case ViewState.busy:
             // model.refresh();
-            widget = model.hasData() ? buildRefreshWidget(context) : buildLoadingWidget(context);
+            widget = model.hasData() ? buildRefreshOutside(context) : buildLoadingWidget(context);
             break;
           case ViewState.empty:
             widget = buildEmptyWidget(context, emptyEnableReload);
@@ -471,7 +481,7 @@ abstract class BaseLoadListDataState<T extends BasePage, VM extends BaseLoadList
             widget = buildErrorWidget(context, errorEnableReload);
             break;
           default:
-            widget = buildRefreshWidget(context);
+            widget = buildRefreshOutside(context);
             break;
         }
         return !showWithOutNoData ? widget : _buildWidgetWithOut(context, widget);
