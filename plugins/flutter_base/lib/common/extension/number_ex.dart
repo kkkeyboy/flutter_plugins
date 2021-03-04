@@ -19,6 +19,14 @@ extension DoubleEx on num {
     return Rational.parse(this.toString()).toDecimalString();
   }
 
+  String toAsFixed(int position) {
+    if ((this.toDecimalString().length - this.toDecimalString().lastIndexOf(".") - 1) < position) {
+      return Rational.parse(this.toStringAsFixed(position).substring(0, this.toString().lastIndexOf(".") + position + 1)).toDecimalString();
+    } else {
+      return Rational.parse(this.toString().substring(0, this.toString().lastIndexOf(".") + position + 1)).toDecimalString();
+    }
+  }
+
   String subZeroAndDot([String nullPlace = ""]) {
     if (this == null) {
       return nullPlace;
@@ -37,12 +45,20 @@ extension DoubleEx on num {
 
 // +
   num add(num value) {
-    return this == null ? value == null ? null : value : this + value;
+    return this == null
+        ? value == null
+            ? null
+            : value
+        : this + value;
   }
 
 //-
   num subtract(num value) {
-    return this == null ? null : value == null ? this : this - value;
+    return this == null
+        ? null
+        : value == null
+            ? this
+            : this - value;
   }
 
 //*
@@ -52,7 +68,11 @@ extension DoubleEx on num {
 
 // /
   num divide(num value) {
-    return this == null ? null : value == null || value == 0 ? this : this / value;
+    return this == null
+        ? null
+        : value == null || value == 0
+            ? this
+            : this / value;
   }
 
   // double operator -(num other) {
