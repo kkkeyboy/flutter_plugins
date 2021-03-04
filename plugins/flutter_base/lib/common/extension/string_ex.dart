@@ -4,6 +4,7 @@ import 'package:crypto/crypto.dart';
 import 'package:convert/convert.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_base/common/helper/Rational.dart';
 import 'package:flutter_base/common/helper/date_helper.dart';
 import 'package:flutter_base/common/helper/log_helper.dart';
 import 'package:flutter_base/common/message_event.dart';
@@ -62,6 +63,10 @@ extension StringEx on String {
 
   String formatDateTime({String emptyPlace = "", bool isUtc, String format}) {
     return this.isNullOrEmpty ? emptyPlace : DateUtil.formatDateStr(this, isUtc: isUtc, format: format);
+  }
+
+  String toDecimalString() {
+    return Rational.parse(this).toDecimalString();
   }
 
   num tryToNum() => this == null ? null : num.tryParse(this);

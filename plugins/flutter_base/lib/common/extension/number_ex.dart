@@ -1,3 +1,5 @@
+import 'package:flutter_base/common/helper/Rational.dart';
+import 'package:flutter_base/common/helper/date_helper.dart';
 import 'package:flutter_base/common/helper/dimens_helper.dart';
 
 extension DoubleEx on num {
@@ -7,6 +9,14 @@ extension DoubleEx on num {
 
   double get rpx {
     return DimensHelper.setRpx(this.toDouble());
+  }
+
+  String formatDateTime({String emptyPlace = "", bool isUtc, String format}) {
+    return this == null ? emptyPlace : DateUtil.formatDateStr(this.toString(), isUtc: isUtc, format: format);
+  }
+
+  String toDecimalString() {
+    return Rational.parse(this.toString()).toDecimalString();
   }
 
   String subZeroAndDot([String nullPlace = ""]) {
