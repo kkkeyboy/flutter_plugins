@@ -6,7 +6,7 @@ import 'CommonData.dart';
 
 class ResultData<T> {
   var response;
-  bool isSuccess;
+  bool isSuccess = false;
   var headers;
   int stateCode;
   CommonData<T> data;
@@ -26,7 +26,11 @@ class ResultData<T> {
 
   T get subData => data.data;
 
-  String get msg => isSuccess == true ? "成功" : data?.msg ?? _getMapResponse()[ResultDataConfig.config.FIELD_MSG] ?? "服務器錯誤，請稍後再試";
+  String get msg =>
+      data?.msg ??
+      _getMapResponse()[ResultDataConfig.config.FIELD_MSG] ??
+      ResultDataConfig.config.getMsg?.call(this) ??
+      (isSuccess ? "成功" : "服务器错误，请稍后再试");
 
   Map<String, dynamic> _getMapResponse() {
     try {
@@ -37,7 +41,6 @@ class ResultData<T> {
     }
   }
 }
-
 
 class ResultDataConfig {
   static ResultDataConfig config = ResultDataConfig();
@@ -54,19 +57,22 @@ class ResultDataConfig {
 
   final Function(ResultData value) onResult;
 
+  final String Function(ResultData value) getMsg;
+
   const ResultDataConfig(
       {this.SUCCESS_CODE = _SUCCESS_CODE,
       this.FIELD_CODE = _FIELD_CODE,
       this.FIELD_MSG = _FIELD_MSG,
       this.FIELD_CONTENT = _FIELD_CONTENT,
-      this.onResult});
+      this.onResult,
+      this.getMsg});
 }
 
 class HanldeResultError {
-  static ResultData<T> resultError<T>(Error e) {
+  static ResultData<T> resultError<T>(dynamic e) {
     Response errorResponse;
     if (e is DioError) {
-      final e1 = e as DioError;
+      final e1 = e;
       if (e1.response != null) {
         errorResponse = e1.response;
       } else {
@@ -75,8 +81,10 @@ class HanldeResultError {
       if (e1.type == DioErrorType.CONNECT_TIMEOUT || e1.type == DioErrorType.RECEIVE_TIMEOUT) {
         errorResponse.statusCode = -1;
       }
-    } else {
+    } else if (e is Error) {
       errorResponse = new Response(statusCode: 666, statusMessage: e.stackTrace?.toString());
+    } else if (e is Exception) {
+      errorResponse = new Response(statusCode: 666, statusMessage: e.toString());
     }
     return new ResultData<T>(errorResponse.statusMessage, errorResponse.statusCode);
   }

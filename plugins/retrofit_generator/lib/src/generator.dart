@@ -403,7 +403,7 @@ class RetrofitGenerator extends GeneratorForAnnotation<retrofit.RestApi> {
           if (_isBasicType(innerReturnType)) {
             blocks.add(Code("final subData = subDataResult.cast<${_displayString(innerReturnType)}>();"));
           } else {
-            blocks.add(Code(" List<Banner> subData = [];"));
+            blocks.add(Code(" List<${_displayString(innerReturnType)}> subData = [];"));
             switch (clientAnnotation.parser) {
               case retrofit.Parser.MapSerializable:
                 blocks.add(Code(
