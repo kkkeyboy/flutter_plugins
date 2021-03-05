@@ -20,7 +20,7 @@ extension DoubleEx on num {
   }
 
   String toAsFixed(int position) {
-    if ((this.toDecimalString().length - this.toDecimalString().lastIndexOf(".") - 1) < position) {
+    if ((this.toString().length - this.toString().lastIndexOf(".") - 1) < position) {
       return Rational.parse(this.toStringAsFixed(position).substring(0, this.toString().lastIndexOf(".") + position + 1)).toDecimalString();
     } else {
       return Rational.parse(this.toString().substring(0, this.toString().lastIndexOf(".") + position + 1)).toDecimalString();
