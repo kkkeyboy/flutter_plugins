@@ -12,9 +12,9 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
-  AnimationController _logoController;
-  Animation<double> _animation;
-  AnimationController _countdownController;
+ late AnimationController _logoController;
+ late Animation<double> _animation;
+ late AnimationController _countdownController;
 
   @override
   void initState() {
@@ -26,7 +26,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     _logoController.forward();
 
     _countdownController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: _logoController.duration.inMilliseconds + 500));
+        AnimationController(vsync: this, duration: Duration(milliseconds: _logoController.duration!.inMilliseconds + 500));
     _countdownController.forward();
     super.initState();
   }
@@ -82,7 +82,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
 class AnimatedCountdown extends AnimatedWidget {
   final Animation<int> animation;
 
-  AnimatedCountdown({key, this.animation, context}) : super(key: key, listenable: animation) {
+  AnimatedCountdown({key, required this.animation, context}) : super(key: key, listenable: animation) {
     this.animation.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         nextPage(context);
@@ -104,13 +104,13 @@ class AnimatedCountdown extends AnimatedWidget {
 
 class AnimatedLogo extends AnimatedWidget {
   AnimatedLogo({
-    Key key,
-    Animation<double> animation,
+    Key? key,
+   required Animation<double> animation,
   }) : super(key: key, listenable: animation);
 
   @override
   Widget build(BuildContext context) {
-    final Animation<double> animation = listenable;
+    final Animation<double> animation = listenable as Animation<double>;
     // print("animation ${animation.value}");
     return AnimatedOpacity(
       opacity: animation.value,

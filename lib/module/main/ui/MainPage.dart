@@ -14,17 +14,17 @@ class _PageState extends BasePageState<MainPage> {
     return ListView(
       padding: EdgeInsets.symmetric(horizontal: ThemeDimens.pageLRMargin, vertical: ThemeDimens.pageVerticalMargin),
       children: [
-        OutlineButton(
+        ElevatedButton (
             onPressed: () {
               DataRepo.sendEmail();
             },
             child: Text("SendEmail")),
-        RaisedButton(
+        ElevatedButton(
             onPressed: () {
               DataRepo.login();
             },
             child: Text("Login")),
-        OutlineButton(
+        ElevatedButton(
             onPressed: () {
               DataRepo.regist();
             },

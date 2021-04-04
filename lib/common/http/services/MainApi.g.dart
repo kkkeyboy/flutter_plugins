@@ -13,7 +13,7 @@ class _MainApi implements MainApi {
 
   final Dio _dio;
 
-  String baseUrl;
+  String? baseUrl;
 
   @override
   Future<ResultData<dynamic>> sendEmail(email) async {
@@ -25,11 +25,10 @@ class _MainApi implements MainApi {
     try {
       response = await _dio.request('/center/api/v1/email/verifycode/$email',
           queryParameters: queryParameters,
-          options: RequestOptions(
+          options: Options(
               method: 'GET',
               headers: <String, dynamic>{},
-              extra: _extra,
-              baseUrl: baseUrl),
+              extra: _extra,),
           data: _data);
     } on DioError catch (e) {
       return HanldeResultError.resultError(e);
@@ -51,17 +50,16 @@ class _MainApi implements MainApi {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(map ?? <String, dynamic>{});
+    _data.addAll(map );
     _data.removeWhere((k, v) => v == null);
     Response response;
     try {
       response = await _dio.request('/center/api/v1/user',
           queryParameters: queryParameters,
-          options: RequestOptions(
+          options: Options(
               method: 'PUT',
               headers: <String, dynamic>{},
-              extra: _extra,
-              baseUrl: baseUrl),
+              extra: _extra,),
           data: _data);
     } on DioError catch (e) {
       return HanldeResultError.resultError(e);
@@ -83,17 +81,16 @@ class _MainApi implements MainApi {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(map ?? <String, dynamic>{});
+    _data.addAll(map );
     _data.removeWhere((k, v) => v == null);
     Response response;
     try {
       response = await _dio.request('/center/api/v1/user',
           queryParameters: queryParameters,
-          options: RequestOptions(
+          options: Options(
               method: 'POST',
               headers: <String, dynamic>{},
-              extra: _extra,
-              baseUrl: baseUrl),
+              extra: _extra,),
           data: _data);
     } on DioError catch (e) {
       return HanldeResultError.resultError(e);

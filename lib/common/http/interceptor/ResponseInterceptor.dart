@@ -4,7 +4,8 @@ import 'package:flutter_base/flutter_base.dart';
 
 class ResponseInterceptors extends InterceptorsWrapper {
   @override
-  onResponse(Response response) async {
+  onResponse(Response response,
+    ResponseInterceptorHandler handler) async {
     // RequestOptions option = response.request;
     // try {
 

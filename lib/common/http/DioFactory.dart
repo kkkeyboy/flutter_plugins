@@ -15,10 +15,10 @@ class DioFactory {
   static DioFactory _instance = DioFactory._internal();
   factory DioFactory() => _instance;
 
-  Dio _dio;
+  Dio? _dio;
   Dio getDio(String apiHost) {
-    _dio.options = _dio.options.merge(baseUrl: apiHost);
-    return _dio;
+    _dio!.options.baseUrl = apiHost;
+    return _dio!;
   }
 
 //全局单例，第一次使用时初始化
@@ -38,20 +38,20 @@ class DioFactory {
       _dio = new Dio(options);
 
       //没网、有网后重试
-      _dio.interceptors.add(
+      _dio!.interceptors.add(
         RetryOnConnectionChangeInterceptor(
           requestRetrier: DioConnectivityRequestRetrier(
-            dio: _dio,
+            dio: _dio!,
             connectivity: Connectivity(),
           ),
         ),
       );
 
       //统一headder处理
-      _dio.interceptors.add(HeaderInterceptor());
+      _dio!.interceptors.add(HeaderInterceptor());
 
       // 添加log拦截器
-      _dio.interceptors.add(LoggerInterceptor());
+      _dio!.interceptors.add(LoggerInterceptor());
 
       //统一处理返回
       // _dio.interceptors.add(ResponseInterceptors());

@@ -17,13 +17,13 @@ class ThemeModel with ChangeNotifier {
   static const fontValueList = ['system', 'kuaile'];
 
   /// 用户选择的明暗模式
-  bool _userDarkMode;
+  late bool _userDarkMode;
 
   /// 当前主题颜色
-  MaterialColor _themeColor;
+ late MaterialColor _themeColor;
 
   /// 当前字体索引
-  int _fontIndex;
+ late int _fontIndex;
 
   ThemeModel() {
     /// 用户选择的明暗模式
@@ -41,7 +41,7 @@ class ThemeModel with ChangeNotifier {
   /// 切换指定色彩
   ///
   /// 没有传[brightness]就不改变brightness,color同理
-  void switchTheme({bool userDarkMode, MaterialColor color, bool needSave = true}) {
+  void switchTheme({bool? userDarkMode, MaterialColor? color, bool needSave = true}) {
     _userDarkMode = userDarkMode ?? _userDarkMode;
     _themeColor = color ?? _themeColor;
     notifyListeners();
@@ -53,7 +53,7 @@ class ThemeModel with ChangeNotifier {
   /// 随机一个主题色彩
   ///
   /// 可以指定明暗模式,不指定则保持不变
-  void switchRandomTheme({Brightness brightness}) {
+  void switchRandomTheme({Brightness? brightness}) {
     int colorIndex = Random().nextInt(Colors.primaries.length - 1);
     switchTheme(
       userDarkMode: Random().nextBool(),
@@ -117,21 +117,21 @@ class ThemeModel with ChangeNotifier {
       cursorColor: accentColor,
 
       textTheme: themeData.textTheme.copyWith(
-          headline1: themeData.textTheme.headline1.copyWith(fontSize: 22, color: accentColor, fontWeight: FontWeight.bold),
-          headline2: themeData.textTheme.headline2.copyWith(fontSize: 30, color: ThemeColors.labelLightColor, fontWeight: FontWeight.bold),
-          headline3: themeData.textTheme.headline3.copyWith(fontSize: 18, color: accentColor),
-          headline4: themeData.textTheme.headline4.copyWith(fontSize: ThemeDimens.headline4, color: labelColor),
-          headline5: themeData.textTheme.headline5.copyWith(fontSize: 10, color: accentColor),
-          headline6: themeData.textTheme.headline6.copyWith(fontSize: 14, color: ThemeColors.labelThemeColor, fontWeight: FontWeight.bold),
+          headline1: themeData.textTheme.headline1!.copyWith(fontSize: 22, color: accentColor, fontWeight: FontWeight.bold),
+          headline2: themeData.textTheme.headline2!.copyWith(fontSize: 30, color: ThemeColors.labelLightColor, fontWeight: FontWeight.bold),
+          headline3: themeData.textTheme.headline3!.copyWith(fontSize: 18, color: accentColor),
+          headline4: themeData.textTheme.headline4!.copyWith(fontSize: ThemeDimens.headline4, color: labelColor),
+          headline5: themeData.textTheme.headline5!.copyWith(fontSize: 10, color: accentColor),
+          headline6: themeData.textTheme.headline6!.copyWith(fontSize: 14, color: ThemeColors.labelThemeColor, fontWeight: FontWeight.bold),
 
           /// 解决中文hint不居中的问题 https://github.com/flutter/flutter/issues/40248
-          subtitle1: themeData.textTheme.subtitle1.copyWith(fontSize: 14, textBaseline: TextBaseline.alphabetic, color: labelColor),
-          subtitle2: themeData.textTheme.subtitle2.copyWith(fontSize: 12, color: Color(0xFF9F9F9F)),
-          bodyText1: themeData.textTheme.bodyText1.copyWith(fontSize: 16, color: accentColor),
-          bodyText2: themeData.textTheme.bodyText2.copyWith(fontSize: 14, color: ThemeColors.labelLightColor),
-          caption: themeData.textTheme.caption.copyWith(color: accentColor),
-          overline: themeData.textTheme.overline.copyWith(color: accentColor),
-          button: themeData.textTheme.button.copyWith(
+          subtitle1: themeData.textTheme.subtitle1!.copyWith(fontSize: 14, textBaseline: TextBaseline.alphabetic, color: labelColor),
+          subtitle2: themeData.textTheme.subtitle2!.copyWith(fontSize: 12, color: Color(0xFF9F9F9F)),
+          bodyText1: themeData.textTheme.bodyText1!.copyWith(fontSize: 16, color: accentColor),
+          bodyText2: themeData.textTheme.bodyText2!.copyWith(fontSize: 14, color: ThemeColors.labelLightColor),
+          caption: themeData.textTheme.caption!.copyWith(color: accentColor),
+          overline: themeData.textTheme.overline!.copyWith(color: accentColor),
+          button: themeData.textTheme.button!.copyWith(
             fontSize: 17,
             color: labelColor,
             fontWeight: FontWeight.bold,
@@ -139,7 +139,7 @@ class ThemeModel with ChangeNotifier {
 
       primaryTextTheme: themeData.primaryTextTheme.copyWith(
         //appbar title
-        headline6: themeData.textTheme.headline6.copyWith(fontSize: 17, color: ThemeColors.labelLightColor),
+        headline6: themeData.textTheme.headline6!.copyWith(fontSize: 17, color: ThemeColors.labelLightColor),
       ),
 
       textSelectionColor: accentColor.withOpacity(0.4),

@@ -3,7 +3,7 @@ part of worker.core;
 Map<String, FileTask> mapUploadTask = {};
 Map<String, FileTask> mapDownloadTask = {};
 void _workerMain(SendPort sendPort) {
-  ReceivePort receivePort;
+   ReceivePort? receivePort;
   receivePort ??= ReceivePort();
 
   if (sendPort is SendPort) {
@@ -13,7 +13,7 @@ void _workerMain(SendPort sendPort) {
   }
 
   receivePort.listen((dynamic message) {
-    if (!_acceptMessage(sendPort, receivePort, message)) return;
+    if (!_acceptMessage(sendPort, receivePort!, message)) return;
 
     try {
       if (message is Task) {
@@ -22,7 +22,7 @@ void _workerMain(SendPort sendPort) {
 
         if (message is FileTask) {
           if (message.actionType == ActionType.upload) {
-            taskId = message.taskId;
+            taskId = message.taskId!;
             mapUploadTask[taskId] = message;
 
             sendPort.send(taskId);
@@ -34,7 +34,7 @@ void _workerMain(SendPort sendPort) {
               ));
             };
           } else if (message.actionType == ActionType.download) {
-            taskId = message.taskId;
+            taskId = message.taskId!;
             mapDownloadTask[taskId] = message;
             sendPort.send(taskId);
             message.taskProgressCallback = (count, total) {

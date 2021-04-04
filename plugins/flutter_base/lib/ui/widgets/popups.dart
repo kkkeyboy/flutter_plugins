@@ -3,10 +3,10 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class PopupWidget extends StatelessWidget {
   const PopupWidget({
-    Key key,
-    @required this.stopEvent,
-    @required this.alignment,
-    @required this.padding,
+    Key? key,
+    required this.stopEvent,
+    required this.alignment,
+    required this.padding,
     this.icon,
     this.message,
   }) : super(key: key);
@@ -14,8 +14,8 @@ class PopupWidget extends StatelessWidget {
   final bool stopEvent;
   final Alignment alignment;
   final EdgeInsetsGeometry padding;
-  final Widget icon;
-  final Widget message;
+  final Widget? icon;
+  final Widget? message;
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +44,13 @@ class PopupWidget extends StatelessWidget {
                         ? SizedBox.shrink()
                         : Container(
                             constraints: BoxConstraints(minHeight: 55.0),
-                            child: IconTheme(data: IconThemeData(size: 55.0), child: icon),
+                            child: IconTheme(data: IconThemeData(size: 55.0), child: icon!),
                           ),
                     message == null
                         ? SizedBox.shrink()
                         : DefaultTextStyle(
-                            style: Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white60),
-                            child: message,
+                            style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.white60),
+                            child: message!,
                           ),
                   ],
                 ),
@@ -101,7 +101,7 @@ class PopupConfigData {
     this.padding = const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
   });
 
-  copyWith({String successText, Duration successDuration, bool backButtonClose, Alignment toastAlignment}) {
+  copyWith({String? successText, Duration? successDuration, bool? backButtonClose, Alignment? toastAlignment}) {
     return PopupConfigData(
         duration: successDuration ?? this.duration, backButtonClose: backButtonClose ?? this.backButtonClose, alignment: toastAlignment ?? this.alignment);
   }
@@ -109,7 +109,7 @@ class PopupConfigData {
 
 class PopupConfig extends InheritedWidget {
   final PopupConfigData data;
-  PopupConfig({Widget child, this.data}) : super(child: child);
+  PopupConfig({required Widget child, required this.data}) : super(child: child);
 
   @override
   bool updateShouldNotify(PopupConfig oldWidget) {

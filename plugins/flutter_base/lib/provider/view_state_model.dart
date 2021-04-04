@@ -8,16 +8,16 @@ import 'view_state.dart';
 
 
 class ObservableField<T> extends ChangeNotifier {
-  ObservableField([T value]) : this._value = value;
-  T _value;
-  set value(T value) {
+  ObservableField([T? value]) : this._value = value;
+  T? _value;
+  set value(T? value) {
     if (value != _value) {
       _value = value;
       notifyListeners();
     }
   }
 
-  T get value => _value;
+  T? get value => _value;
 }
 
 class BaseViewModel with ChangeNotifier {
@@ -25,13 +25,13 @@ class BaseViewModel with ChangeNotifier {
   bool _disposed = false;
 
   /// 当前的页面状态,默认为busy,可在viewModel的构造方法中指定;
-  ViewState _viewState;
+  late ViewState _viewState;
 
   /// 根据状态构造
   ///
   /// 子类可以在构造函数指定需要的页面状态
   /// FooModel():super(viewState:ViewState.busy);
-  BaseViewModel({ViewState viewState}) : _viewState = viewState ?? ViewState.idle {
+  BaseViewModel({ViewState? viewState}) : _viewState = viewState ?? ViewState.idle {
     debugPrint('ViewStateModel---constructor--->$runtimeType');
   }
 
@@ -39,7 +39,7 @@ class BaseViewModel with ChangeNotifier {
   ViewState get viewState => _viewState;
 
   var _needDiscardLastSetState = false;
-  int _lastStateChangeTime;
+  int? _lastStateChangeTime;
   set viewState(ViewState viewState) {
     final now = DateTime.now().microsecondsSinceEpoch;
     if (_viewState == viewState) {
@@ -70,9 +70,9 @@ class BaseViewModel with ChangeNotifier {
   }
 
   /// ViewStateError
-  ViewStateError _viewStateError;
+  ViewStateError? _viewStateError;
 
-  ViewStateError get viewStateError => _viewStateError;
+  ViewStateError get viewStateError => _viewStateError!;
 
   /// set
   void setIdle() {
@@ -88,19 +88,19 @@ class BaseViewModel with ChangeNotifier {
   }
 
   /// [e]分类Error和Exception两种
-  void setError(e, stackTrace, {String message}) {
+  void setError(e, stackTrace, {String? message}) {
     ViewStateErrorType errorType = ViewStateErrorType.defaultError;
 
     /// 见https://github.com/flutterchina/dio/blob/master/README-ZH.md#dioerrortype
     if (e is DioError) {
-      if (e.type == DioErrorType.CONNECT_TIMEOUT || e.type == DioErrorType.SEND_TIMEOUT || e.type == DioErrorType.RECEIVE_TIMEOUT) {
+      if (e.type == DioErrorType.connectTimeout || e.type == DioErrorType.sendTimeout || e.type == DioErrorType.receiveTimeout) {
         // timeout
         errorType = ViewStateErrorType.networkTimeOutError;
         message = e.error;
-      } else if (e.type == DioErrorType.RESPONSE) {
+      } else if (e.type == DioErrorType.response) {
         // incorrect status, such as 404, 503...
         message = e.error;
-      } else if (e.type == DioErrorType.CANCEL) {
+      } else if (e.type == DioErrorType.cancel) {
         // to be continue...
         message = e.error;
       } else {
@@ -131,15 +131,15 @@ class BaseViewModel with ChangeNotifier {
     onError(viewStateError);
   }
 
-  void onError(ViewStateError viewStateError) {}
+  void onError(ViewStateError? viewStateError) {}
 
   /// 显示错误消息
-  showErrorMessage(context, {String message}) {
+  showErrorMessage(context, {String? message}) {
     if (viewStateError != null || message != null) {
-      if (viewStateError.isNetworkTimeOut) {
+      if (viewStateError!.isNetworkTimeOut) {
         message ??= "";
       } else {
-        message ??= viewStateError.message;
+        message ??= viewStateError?.message;
       }
       // Future.microtask(() {
       //   showToast(message, context: context);
@@ -195,7 +195,7 @@ abstract class BaseLoadDataViewModel extends BaseViewModel {
 
 abstract class BaseLoadRefreshDataViewModel<T> extends BaseLoadDataViewModel {
   /// 页面数据
-  T data;
+   T? data;
 
   final _refreshController = RefreshController(initialRefresh: false);
   RefreshController get refreshController => _refreshController;
@@ -211,13 +211,13 @@ abstract class BaseLoadRefreshDataViewModel<T> extends BaseLoadDataViewModel {
 
   @override
   // 加载数据
-  Future<T> loadData();
+  Future<T?> loadData();
 
   @override
   bool hasData() => data != null;
 
   /// 下拉刷新
-  Future<T> refresh() async {
+  Future<T?> refresh() async {
     try {
       var data = await loadData();
       if (data != null) {
@@ -245,7 +245,7 @@ abstract class BaseLoadRefreshDataViewModel<T> extends BaseLoadDataViewModel {
 
 abstract class BaseLoadListDataViewModel<T> extends BaseLoadDataViewModel {
   /// 页面数据
-  List<T> datas = [];
+  List<T>? datas = [];
 
   /// 分页第一页页码
   static const int pageNumFirst = 1;
@@ -279,19 +279,19 @@ abstract class BaseLoadListDataViewModel<T> extends BaseLoadDataViewModel {
 
   // 加载数据
   @override
-  Future<List<T>> loadData({int pageNum});
+  Future<List<T>?> loadData({int pageNum});
 
   @override
   bool hasData() => datas?.isNotEmpty == true;
 
   /// 下拉刷新
-  Future<List<T>> refresh() async {
+  Future<List<T>?> refresh() async {
     try {
       pageNum = pageNumFirst;
       var data = await loadData(pageNum: pageNumFirst);
-      datas.clear();
+      datas?.clear();
       if (data?.isNotEmpty == true) {
-        datas.addAll(data);
+        datas?.addAll(data!);
       }
       refreshController.refreshCompleted();
       // 小于分页的数量,禁止上拉加载更多
@@ -314,15 +314,15 @@ abstract class BaseLoadListDataViewModel<T> extends BaseLoadDataViewModel {
   }
 
   /// 上拉加载更多
-  Future<List<T>> loadMore() async {
+  Future<List<T>?> loadMore() async {
     try {
       var data = await loadData(pageNum: ++pageNum);
       if (data?.isNotEmpty != true) {
         pageNum--;
         refreshController.loadNoData();
       } else {
-        datas.addAll(data);
-        if (data.length < pageSize) {
+        datas?.addAll(data!);
+        if (data!.length < pageSize) {
           refreshController.loadNoData();
         } else {
           refreshController.loadComplete();

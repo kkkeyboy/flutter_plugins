@@ -5,7 +5,7 @@ EventBus eventBus = EventBus();
 class LoadingPopupEvent {
   final bool isShow;
   final bool canCancel;
-  final String msg;
+  final String? msg;
   const LoadingPopupEvent({
     this.isShow = true,
     this.canCancel = true,
@@ -14,9 +14,9 @@ class LoadingPopupEvent {
 }
 
 class ToastPopupEvent {
-  final String tipImg;
+  final String? tipImg;
   final bool canCancel;
-  final String msg;
+  final String? msg;
   const ToastPopupEvent({
     this.tipImg,
     this.canCancel = true,

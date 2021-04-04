@@ -8,7 +8,7 @@ import 'view_state_model.dart';
 
 /// 加载中
 class ViewStateBusyWidget extends StatelessWidget {
-  const ViewStateBusyWidget({Key key}) : super(key: key);
+  const ViewStateBusyWidget({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -24,19 +24,19 @@ class ViewStateBusyWidget extends StatelessWidget {
 
 /// 基础Widget
 class ViewStateWidget extends StatelessWidget {
-  final String title;
-  final String message;
-  final Widget image;
-  final Widget buttonText;
-  final String buttonTextData;
-  final VoidCallback onPressed;
+  final String? title;
+  final String? message;
+  final Widget? image;
+  final Widget? buttonText;
+  final String? buttonTextData;
+  final VoidCallback? onPressed;
 
-  ViewStateWidget({Key key, this.image, this.title, this.message, this.buttonText, this.onPressed, this.buttonTextData}) : super(key: key);
+  ViewStateWidget({Key? key, this.image, this.title, this.message, this.buttonText, this.onPressed, this.buttonTextData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var titleStyle = Theme.of(context).textTheme.headline4.copyWith(color: Colors.grey);
-    var messageStyle = titleStyle.copyWith(color: titleStyle.color.withOpacity(0.7), fontSize: 14);
+    var titleStyle = Theme.of(context).textTheme.headline4!.copyWith(color: Colors.grey);
+    var messageStyle = titleStyle.copyWith(color: titleStyle.color!.withOpacity(0.7), fontSize: 14);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -79,16 +79,16 @@ class ViewStateWidget extends StatelessWidget {
 /// ErrorWidget
 class ViewStateErrorWidget extends StatelessWidget {
   final ViewStateError error;
-  final String title;
-  final String message;
-  final Widget image;
-  final Widget buttonWidget;
-  final String buttonText;
-  final VoidCallback onPressed;
+  final String? title;
+  final String? message;
+  final Widget? image;
+  final Widget? buttonWidget;
+  final String? buttonText;
+  final VoidCallback? onPressed;
 
   const ViewStateErrorWidget({
-    Key key,
-    @required this.error,
+    Key? key,
+    required this.error,
     this.image,
     this.title,
     this.message,
@@ -136,13 +136,13 @@ class ViewStateErrorWidget extends StatelessWidget {
 
 /// 页面无数据
 class ViewStateEmptyWidget extends StatelessWidget {
-  final String message;
-  final Widget image;
-  final Widget buttonWidget;
-  final Widget buttonText;
-  final VoidCallback onPressed;
+  final String? message;
+  final Widget? image;
+  final Widget? buttonWidget;
+  final String? buttonText;
+  final VoidCallback? onPressed;
 
-  const ViewStateEmptyWidget({Key key, this.image, this.message, this.buttonWidget, this.buttonText, this.onPressed}) : super(key: key);
+  const ViewStateEmptyWidget({Key? key, this.image, this.message, this.buttonWidget, this.buttonText, this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -159,12 +159,12 @@ class ViewStateEmptyWidget extends StatelessWidget {
 
 /// 页面未授权
 class ViewStateUnAuthWidget extends StatelessWidget {
-  final String message;
-  final Widget image;
-  final Widget buttonText;
-  final VoidCallback onPressed;
+  final String? message;
+  final Widget? image;
+  final Widget? buttonText;
+  final VoidCallback? onPressed;
 
-  const ViewStateUnAuthWidget({Key key, this.image, this.message, this.buttonText, @required this.onPressed}) : super(key: key);
+  const ViewStateUnAuthWidget({Key? key, this.image, this.message, this.buttonText, @required this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -181,9 +181,9 @@ class ViewStateUnAuthWidget extends StatelessWidget {
 
 /// 公用Button
 class ViewStateButton extends StatelessWidget {
-  final VoidCallback onPressed;
-  final Widget child;
-  final String textData;
+  final VoidCallback? onPressed;
+  final Widget? child;
+  final String? textData;
 
   const ViewStateButton({@required this.onPressed, this.child, this.textData}) : assert(child == null || textData == null);
 
@@ -206,15 +206,15 @@ class ViewStateButton extends StatelessWidget {
 class ViewStateLayou<T extends BaseViewModel> extends StatefulWidget {
   final ViewState viewState;
   final Widget empty;
-  final Widget error;
+  final Widget? error;
   final Widget loading;
   final Widget child;
   @override
   _ViewStateLayoutState createState() => _ViewStateLayoutState();
   const ViewStateLayou({
-    Key key,
-    @required this.child,
-    @required this.viewState,
+    Key? key,
+    required this.child,
+    required this.viewState,
     this.empty: const ViewStateEmptyWidget(),
     this.error,
     this.loading: const ViewStateBusyWidget(),
@@ -239,23 +239,23 @@ class _ViewStateLayoutState extends State<ViewStateLayou> {
 
 @immutable
 class ViewStateConfigData {
-  final Widget emptyIconWidget;
+  final Widget? emptyIconWidget;
   final String emptyTip;
-  final Widget emptyButtonWidget;
-  final String emptyButtonText;
+  final Widget? emptyButtonWidget;
+  final String? emptyButtonText;
 
-  final Widget errorNetIconWidget;
-  final Widget errorIconWidget;
+  final Widget? errorNetIconWidget;
+  final Widget? errorIconWidget;
   final String errorNetTip;
   final String errorTip;
-  final Widget errorButtonWidget;
-  final String errorButtonText;
+  final Widget? errorButtonWidget;
+  final String? errorButtonText;
 
-  final Widget errorUnauthorizedIconWidget;
+  final Widget? errorUnauthorizedIconWidget;
   final String errorUnauthorizedTip;
-  final Widget errorUnauthorizedButtonWidget;
-  final String errorUnauthorizedButtonText;
-  final VoidCallback errorUnauthorizedOnPressed;
+  final Widget? errorUnauthorizedButtonWidget;
+  final String? errorUnauthorizedButtonText;
+  final VoidCallback? errorUnauthorizedOnPressed;
 
   const ViewStateConfigData({
     this.emptyIconWidget = const Icon(Icons.no_sim, size: 100, color: Colors.grey),
@@ -279,21 +279,21 @@ class ViewStateConfigData {
   });
 
   copyWith(
-      {Widget emptyIconWidget,
-      String emptyTip,
-      Widget emptyButtonWidget,
-      String emptyButtonText,
-      Widget errorNetIconWidget,
-      Widget errorIconWidget,
-      String errorNetTip,
-      String errorTip,
-      Widget errorButtonWidget,
-      String errorButtonText,
-      Widget errorUnauthorizedIconWidget,
-      String errorUnauthorizedTip,
-      Widget errorUnauthorizedButtonWidget,
-      String errorUnauthorizedButtonText,
-      VoidCallback errorUnauthorizedOnPressed}) {
+      {Widget? emptyIconWidget,
+      String? emptyTip,
+      Widget? emptyButtonWidget,
+      String? emptyButtonText,
+      Widget? errorNetIconWidget,
+      Widget? errorIconWidget,
+      String? errorNetTip,
+      String? errorTip,
+      Widget? errorButtonWidget,
+      String? errorButtonText,
+      Widget? errorUnauthorizedIconWidget,
+      String? errorUnauthorizedTip,
+      Widget? errorUnauthorizedButtonWidget,
+      String? errorUnauthorizedButtonText,
+      VoidCallback? errorUnauthorizedOnPressed}) {
     return ViewStateConfigData(
       emptyIconWidget: emptyIconWidget ?? this.emptyIconWidget,
       emptyTip: emptyTip ?? this.emptyTip,
@@ -316,11 +316,11 @@ class ViewStateConfigData {
 
 // ignore: must_be_immutable
 class ViewStateConfig extends InheritedWidget {
-  ViewStateConfigData _data;
+  ViewStateConfigData? _data;
   ViewStateConfigData get data => _data ?? (_data = _configGenerator.call());
 
   final ViewStateConfigGenerator _configGenerator;
-  ViewStateConfig({Widget child, ViewStateConfigGenerator configBuilder})
+  ViewStateConfig({required Widget child,required ViewStateConfigGenerator configBuilder})
       : this._configGenerator = configBuilder,
         super(child: child);
 

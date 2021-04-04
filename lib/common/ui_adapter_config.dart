@@ -14,7 +14,7 @@ class InnerWidgetsFlutterBinding extends WidgetsFlutterBinding {
 
   static WidgetsBinding ensureInitialized() {
     if (WidgetsBinding.instance == null) InnerWidgetsFlutterBinding();
-    return WidgetsBinding.instance;
+    return WidgetsBinding.instance!;
   }
 
   double get adapterRatio {
@@ -73,7 +73,7 @@ class InnerWidgetsFlutterBinding extends WidgetsFlutterBinding {
 
   void _handlePointerEvent(PointerEvent event) {
     assert(!locked);
-    HitTestResult result;
+    HitTestResult? result;
     if (event is PointerDownEvent) {
       assert(!_hitTests.containsKey(event.pointer));
       result = HitTestResult();

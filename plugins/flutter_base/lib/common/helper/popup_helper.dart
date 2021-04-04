@@ -7,14 +7,14 @@ import 'package:flutter_base/ui/widgets/popups.dart';
 typedef HideCallback = Future Function();
 
 Future showTipPopup(
-    {@required BuildContext context,
-    Widget icon,
-    String message,
-    Widget messageWidget,
+    {required BuildContext context,
+    Widget? icon,
+    String? message,
+    Widget? messageWidget,
     stopEvent = false,
-    bool backButtonClose,
-    Alignment alignment,
-    Duration closeDuration}) {
+    bool? backButtonClose,
+    Alignment? alignment,
+    Duration? closeDuration}) {
   final config = PopupConfig.of(context);
   closeDuration = closeDuration ?? config.duration;
   backButtonClose = backButtonClose ?? config.backButtonClose;
@@ -33,7 +33,7 @@ Future showTipPopup(
 }
 
 HideCallback showLoadingPopup(
-    {@required BuildContext context, Widget message, String messageTxt, stopEvent = true, bool backButtonClose, Alignment alignment}) {
+    {required BuildContext context, Widget? message, String? messageTxt, stopEvent = true, bool? backButtonClose, Alignment? alignment}) {
   var config = PopupConfig.of(context);
   message = message ?? Text(messageTxt ?? "");
   backButtonClose = backButtonClose ?? config.backButtonClose;
@@ -43,7 +43,7 @@ HideCallback showLoadingPopup(
 
 int backButtonIndex = 2;
 
-HideCallback showPopup({@required BuildContext context, Widget message, Widget icon, bool stopEvent = false, Alignment alignment, bool backButtonClose}) {
+HideCallback showPopup({required BuildContext context, Widget? message, Widget? icon, bool stopEvent = false, Alignment? alignment,required bool backButtonClose}) {
   var config = PopupConfig.of(context);
   alignment = alignment ?? config.alignment;
 
@@ -60,7 +60,7 @@ HideCallback showPopup({@required BuildContext context, Widget message, Widget i
   }, zIndex: backButtonIndex, name: backButtonName);
   backButtonIndex++;
 
-  var overlay = OverlayEntry(
+  OverlayEntry? overlay = OverlayEntry(
       maintainState: true,
       builder: (_) => WillPopScope(
             onWillPop: () async {
@@ -69,7 +69,7 @@ HideCallback showPopup({@required BuildContext context, Widget message, Widget i
               return false;
             },
             child: PopupWidget(
-              alignment: alignment,
+              alignment: alignment!,
               icon: icon,
               padding: config.padding,
               message: message,
@@ -80,11 +80,11 @@ HideCallback showPopup({@required BuildContext context, Widget message, Widget i
     if (overlay == null) {
       return;
     }
-    overlay.remove();
+    overlay!.remove();
     overlay = null;
     BackButtonInterceptor.removeByName(backButtonName);
   });
-  Overlay.of(context).insert(overlay);
+  Overlay.of(context)!.insert(overlay!);
 
   return () async {
     var hide = await result.future;

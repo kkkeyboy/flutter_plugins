@@ -1,13 +1,13 @@
 import 'MapEx.dart';
 
-extension ListEx on List {
+extension ListEx on List? {
   String toJson({bool isFormat = false, int indentation = 2}) {
     String result = "";
     String indentationStr = isFormat ? " " * indentation : "";
     if (true) {
       result += "$indentationStr[";
-      if (this.isNotEmpty) {
-        this.forEach((value) {
+      if (!this.isNullOrEmpty) {
+        this!.forEach((value) {
           if (value is Map) {
             var temp = value.toJson(isFormat: isFormat, indentation: indentation + 2);
             result += "\n$indentationStr" + "\"$temp\",";
@@ -26,7 +26,7 @@ extension ListEx on List {
     return result;
   }
 
-  bool get isNullOrEmpty => this == null || this.isEmpty;
+  bool get isNullOrEmpty => this == null || this?.isEmpty==true;
 
   // R reduceAs<T,R>(R combine(T value, T element)) {
   //   Iterator<T> iterator = this.iterator;

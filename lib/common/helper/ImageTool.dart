@@ -10,7 +10,7 @@ Future<ui.Image> loadImageByProvider(
   ImageConfiguration config = ImageConfiguration.empty,
 }) async {
   Completer<ui.Image> completer = Completer<ui.Image>(); //完成的回调
-  ImageStreamListener listener;
+  late ImageStreamListener listener;
   ImageStream stream = provider.resolve(config); //获取图片流
   listener = ImageStreamListener((ImageInfo frame, bool sync) {
 //监听
@@ -26,8 +26,8 @@ Future<bool> saveImage(ui.Image image) async {
   final isGranted = await Permission.storage.request().isGranted;
   var result = false;
   if (isGranted) {
-    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    final tmpResult = await ImageGallerySaver.saveImage(byteData.buffer.asUint8List());
+    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    final tmpResult = await ImageGallerySaver.saveImage(byteData?.buffer.asUint8List());
     if (tmpResult != null && tmpResult is String) {
       result = tmpResult.toString().isNotEmpty;
     } else if (tmpResult is bool) {

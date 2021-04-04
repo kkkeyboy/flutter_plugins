@@ -3,12 +3,12 @@ import 'package:shimmer/shimmer.dart';
 
 class ShimmerView extends StatelessWidget {
   final Widget child;
-  final Color baseColor;
-  final Color highlightColor;
+  final Color? baseColor;
+  final Color? highlightColor;
   final bool enableScroll;
 
   ShimmerView({
-    @required this.child,
+    required this.child,
     this.baseColor,
     this.highlightColor,
     this.enableScroll = true,

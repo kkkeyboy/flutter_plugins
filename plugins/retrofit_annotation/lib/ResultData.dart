@@ -8,11 +8,11 @@ class ResultData<T> {
   var response;
   bool isSuccess = false;
   var headers;
-  int stateCode;
-  CommonData<T> data;
+  late int stateCode;
+  CommonData<T>? data;
 
-  ResultData(this.response, int code, {this.headers, T subData}) {
-    this.stateCode = code;
+  ResultData(this.response, int? code, {this.headers, T? subData}) {
+    this.stateCode = code??-1;
     if (response != null) {
       try {
         this.data = CommonData.convertData(_getMapResponse(), data: subData);
@@ -24,7 +24,7 @@ class ResultData<T> {
     ResultDataConfig.config.onResult?.call(this);
   }
 
-  T get subData => data.data;
+  T? get subData => data?.data;
 
   String get msg =>
       data?.msg ??
@@ -55,9 +55,9 @@ class ResultDataConfig {
   final String FIELD_MSG;
   final String FIELD_CONTENT;
 
-  final Function(ResultData value) onResult;
+  final Function(ResultData value)? onResult;
 
-  final String Function(ResultData value) getMsg;
+  final String Function(ResultData value)? getMsg;
 
   const ResultDataConfig(
       {this.SUCCESS_CODE = _SUCCESS_CODE,
@@ -70,22 +70,22 @@ class ResultDataConfig {
 
 class HanldeResultError {
   static ResultData<T> resultError<T>(dynamic e) {
-    Response errorResponse;
+    Response? errorResponse;
     if (e is DioError) {
       final e1 = e;
       if (e1.response != null) {
         errorResponse = e1.response;
       } else {
-        errorResponse = new Response(statusCode: 666, statusMessage: e1.message);
+        errorResponse = new Response(requestOptions:e1.requestOptions, statusCode: 666, statusMessage: e1.message);
       }
-      if (e1.type == DioErrorType.CONNECT_TIMEOUT || e1.type == DioErrorType.RECEIVE_TIMEOUT) {
-        errorResponse.statusCode = -1;
+      if (e1.type == DioErrorType.connectTimeout || e1.type == DioErrorType.receiveTimeout) {
+        errorResponse?.statusCode = -1;
       }
     } else if (e is Error) {
-      errorResponse = new Response(statusCode: 666, statusMessage: e.stackTrace?.toString());
+      errorResponse = new Response(requestOptions:RequestOptions(path:""),statusCode: 666, statusMessage: e.stackTrace?.toString());
     } else if (e is Exception) {
-      errorResponse = new Response(statusCode: 666, statusMessage: e.toString());
+      errorResponse = new Response(requestOptions:RequestOptions(path:""),statusCode: 666, statusMessage: e.toString());
     }
-    return new ResultData<T>(errorResponse.statusMessage, errorResponse.statusCode);
+    return new ResultData<T>(errorResponse?.statusMessage, errorResponse?.statusCode??0);
   }
 }

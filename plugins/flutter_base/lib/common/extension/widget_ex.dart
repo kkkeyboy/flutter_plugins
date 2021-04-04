@@ -11,11 +11,11 @@ extension WidgetEx on Widget {
     Alignment alignment = Alignment.center,
     double heightFactor: 1.0,
     double widthFactor: 1.12,
-    GestureTapCallback onTap,
-    Color focusColor,
-    Color hoverColor,
-    Color highlightColor,
-    Color splashColor,
+    GestureTapCallback? onTap,
+    Color? focusColor,
+    Color? hoverColor,
+    Color? highlightColor,
+    Color? splashColor,
   }) {
     return InkWell(
       onTap: onTap,
@@ -33,8 +33,8 @@ extension WidgetEx on Widget {
   }
 
   SizedBox size({
-    double width,
-    double height,
+    double? width,
+    double? height,
   }) {
     return SizedBox(
       width: width ?? double.infinity,
@@ -52,11 +52,11 @@ extension WidgetEx on Widget {
     );
   }
 
-  Center center({double widthFactor, double heightFactor}) {
+  Center center({double? widthFactor, double? heightFactor}) {
     return Center(child: this, widthFactor: widthFactor, heightFactor: heightFactor);
   }
 
-    Container alignment(Alignment alignment, {EdgeInsetsGeometry padding}) {
+    Container alignment(Alignment alignment, {EdgeInsetsGeometry? padding}) {
     return Container(
       alignment: alignment,
       padding: padding,
@@ -64,18 +64,18 @@ extension WidgetEx on Widget {
     );
   }
 
-  Widget showBy(bool isShow, {Widget place}) {
+  Widget showBy(bool isShow, {Widget? place}) {
     return isShow ? this : place ?? SizedBox.shrink();
   }
 
   DecoratedBox bg({
-    Color color,
-    DecorationImage image,
-    BoxBorder border,
-    BorderRadiusGeometry borderRadius,
-    List<BoxShadow> boxShadow,
-    Gradient gradient,
-    BlendMode backgroundBlendMode,
+    Color? color,
+    DecorationImage? image,
+    BoxBorder? border,
+    BorderRadiusGeometry? borderRadius,
+    List<BoxShadow>? boxShadow,
+    Gradient? gradient,
+    BlendMode? backgroundBlendMode,
     BoxShape shape = BoxShape.rectangle,
   }) {
     return DecoratedBox(

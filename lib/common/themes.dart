@@ -52,18 +52,18 @@ class ThemeDimens {
 
 class ThemeStyles {
   static TextStyle getLarge(BuildContext context) {
-    return Theme.of(context).textTheme.headline1.copyWith(fontSize: 38, fontWeight: FontWeight.bold);
+    return Theme.of(context).textTheme.headline1!.copyWith(fontSize: 38, fontWeight: FontWeight.bold);
   }
 
   static TextStyle getSubtitle1lLight(BuildContext context) {
-    return Theme.of(context).textTheme.subtitle1.copyWith(color: ThemeColors.labelLightColor);
+    return Theme.of(context).textTheme.subtitle1!.copyWith(color: ThemeColors.labelLightColor);
   }
 
   static TextStyle getHeadline4lLight(BuildContext context) {
-    return Theme.of(context).textTheme.headline4.copyWith(color: ThemeColors.labelLightColor);
+    return Theme.of(context).textTheme.headline4!.copyWith(color: ThemeColors.labelLightColor);
   }
 
   static TextStyle getSubtitle2lLight(BuildContext context) {
-    return Theme.of(context).textTheme.subtitle2.copyWith(color: ThemeColors.accentDartFgColor);
+    return Theme.of(context).textTheme.subtitle2!.copyWith(color: ThemeColors.accentDartFgColor);
   }
 }

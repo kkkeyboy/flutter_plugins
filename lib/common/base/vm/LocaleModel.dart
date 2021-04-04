@@ -3,48 +3,39 @@ import 'package:codes/generated/l10n.dart';
 
 import '../../StorageManager.dart';
 
+import 'package:flutter_base/flutter_base.dart';
+
 class LocaleModel extends ChangeNotifier {
-//  static const localeNameList = ['auto', '中文', 'English'];
-  static const localeValueList = ['', 'zh-CN', 'en'];
+  static const _LocaleCacheKey = '_LocaleCacheKey';
 
-  //
-  static const kLocaleIndex = 'kLocaleIndex';
+  late Locale _locale;
 
-  int _localeIndex;
-
-  int get localeIndex => _localeIndex;
-
-  Locale get locale {
-    if (_localeIndex > 0) {
-      var value = localeValueList[_localeIndex].split("-");
-      return Locale(value[0], value.length == 2 ? value[1] : '');
-    }
-    // 跟随系统
-    // return null;
-
-    return Locale.fromSubtags(languageCode: 'zh',scriptCode: 'Hans', countryCode: 'CN');
-  }
+  Locale get locale => _locale;
 
   LocaleModel() {
-    _localeIndex = StorageManager.sharedPreferences.getInt(kLocaleIndex) ?? 0;
-  }
-
-  switchLocale(int index) {
-    _localeIndex = index;
-    notifyListeners();
-    StorageManager.sharedPreferences.setInt(kLocaleIndex, index);
-  }
-
-  static String localeName(index, context) {
-    switch (index) {
-      case 0:
-        return S.of(context).autoBySystem;
-      case 1:
-        return '中文';
-      case 2:
-        return 'English';
-      default:
-        return '';
+    final cacheLocal = StorageManager.sharedPreferences.getString(_LocaleCacheKey);
+    if (!cacheLocal.isNullOrEmpty) {
+      final loaclArgArr = cacheLocal!.split(',');
+      _locale = Locale.fromSubtags(languageCode: loaclArgArr[0], countryCode: loaclArgArr.length > 1 ? loaclArgArr[1] : null);
+    } else {
+      _locale = Locale('en');
     }
+  }
+
+  switchLocale(Locale locale) {
+    _locale = locale;
+    S.load(_locale);
+    notifyListeners();
+    StorageManager.sharedPreferences.setString(_LocaleCacheKey, "${locale.languageCode},${locale.countryCode}");
+  }
+
+  static String localeName(Locale? locale) {
+    if (locale != null) {
+      if ('en'.equals(locale.languageCode, ignoreCase: true)) return 'English';
+      if ('jp'.equals(locale.languageCode, ignoreCase: true)) return '日本語の表記';
+      if ('zh'.equals(locale.languageCode, ignoreCase: true) && 'TW'.equals(locale.countryCode, ignoreCase: true)) return '中文（繁體）';
+      if ('zh'.equals(locale.languageCode, ignoreCase: true)) return '中文';
+    }
+    return S.current.autoBySystem;
   }
 }

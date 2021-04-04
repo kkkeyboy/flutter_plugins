@@ -2,7 +2,8 @@ import 'package:flutter_base/flutter_base.dart';
 
 class LoggerInterceptor extends Interceptor {
   @override
-  Future onRequest(RequestOptions options) async {
+  Future onRequest(RequestOptions options,
+    RequestInterceptorHandler handler) async {
     String requestStr = "\n==================== REQUEST ====================\n"
         "- URL:\n${options.uri}\n"
         "- METHOD: ${options.method}\n";
@@ -25,15 +26,16 @@ class LoggerInterceptor extends Interceptor {
   }
 
   @override
-  Future onError(DioError err) async {
+  Future onError(DioError err,
+    ErrorInterceptorHandler handler) async {
     String errorStr = "\n==================== RESPONSE ====================\n"
-        "- URL:\n${err.request.baseUrl + err.request.path}\n"
-        "- METHOD: ${err.request.method}\n";
+        "- URL:\n${err.requestOptions.baseUrl + err.requestOptions.path}\n"
+        "- METHOD: ${err.requestOptions.method}\n";
 
-    errorStr += "- HEADER:\n${err.response.headers?.map?.mapToStructureString()}\n";
-    if (err.response != null && err.response.data != null) {
+    errorStr += "- HEADER:\n${err.response?.headers?.map?.mapToStructureString()}\n";
+    if (err.response != null && err.response?.data != null) {
       '╔ ${err.type.toString()}'.log("HTTP");
-      errorStr += "- ERROR:\n${_parseResponse(err.response)}\n";
+      errorStr += "- ERROR:\n${_parseResponse(err.response!)}\n";
     } else {
       errorStr += "- ERRORTYPE: ${err.type}\n";
       errorStr += "- MSG: ${err.message}\n";
@@ -43,9 +45,10 @@ class LoggerInterceptor extends Interceptor {
   }
 
   @override
-  Future onResponse(Response response) async {
+  Future onResponse(Response response,
+    ResponseInterceptorHandler handler) async {
     String responseStr = "\n==================== RESPONSE ====================\n"
-        "- URL:\n${response.request.uri}\n";
+        "- URL:\n${response.requestOptions.uri}\n";
     responseStr += "- HEADER:\n{";
     response.headers?.forEach((key, list) => responseStr += "\n  " + "\"$key\" : \"$list\",");
     responseStr += "\n}\n";

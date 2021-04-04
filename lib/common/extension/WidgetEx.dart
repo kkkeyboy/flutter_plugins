@@ -9,9 +9,9 @@ extension WidgetEx on Widget {
       Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: ["#FFBF60".toColor(), "#FF8F1F".toColor()],
             begin: FractionalOffset(0.2, 0),
             end: FractionalOffset(0.2, 0.28),
+            colors:["#FFBF60".toColor(), "#FF8F1F".toColor()],
           ),
         ),
       ),

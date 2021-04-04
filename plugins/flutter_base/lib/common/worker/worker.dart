@@ -22,7 +22,7 @@ abstract class Worker {
   bool get isClosed;
 
   /// Size of the pool of isolates.
-  int poolSize;
+  int? poolSize;
 
   /// All spawned isolates
   Queue<WorkerIsolate> get isolates;
@@ -48,7 +48,7 @@ abstract class Worker {
   /// Stream of task failed events.
   Stream<TaskFailedEvent> get onTaskFailed;
 
-  factory Worker({int poolSize, bool spawnLazily = true}) {
+  factory Worker({int? poolSize, bool spawnLazily = true}) {
     poolSize ??= Platform.numberOfProcessors;
 
     return _WorkerImpl(poolSize: poolSize, spawnLazily: spawnLazily);
@@ -69,9 +69,9 @@ abstract class Worker {
 abstract class WorkerIsolate {
   bool get isClosed;
   bool get isFree;
-  Task get runningTask;
+  Task? get runningTask;
   List<Task> get scheduledTasks;
-  String taskId;
+  String? taskId;
 
   /// Stream of task spawned events.
   Stream<IsolateSpawnedEvent> get onSpawned;
@@ -90,7 +90,7 @@ abstract class WorkerIsolate {
 
   factory WorkerIsolate() => _WorkerIsolateImpl();
 
-  Future performTask(Task task, {Function(TransferProgress progress) callback});
+  Future performTask(Task task, {Function(TransferProgress progress)? callback});
 
   /// Closes the [ReceivePort] of the isolate.
   /// Waits until all scheduled tasks have completed if [afterDone] is `true`.
@@ -116,9 +116,9 @@ abstract class Task<T> {
 typedef ProgressCallback = void Function(int count, int total);
 
 abstract class FileTask<T> extends Task<T> {
-  ProgressCallback taskProgressCallback;
-  String taskId;
-  ActionType actionType;
+  ProgressCallback? taskProgressCallback;
+  String? taskId;
+  ActionType? actionType;
 
   void handleCancel(String taskId);
 }
@@ -126,8 +126,8 @@ abstract class FileTask<T> extends Task<T> {
 enum ActionType { upload, download, cancelUpload, cancelDownload }
 
 class TransferProgress {
-  final int count;
-  final int total;
+  final int? count;
+  final int? total;
 
   const TransferProgress({this.count, this.total});
 }

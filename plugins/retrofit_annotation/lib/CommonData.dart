@@ -12,17 +12,17 @@ class CommonData<T> {
 
   CommonData();
 
-  String code;
+  late String code;
   var content;
-  String msg;
-  T data;
+  late String msg;
+  T? data;
 
   CommonData.convertData(Map<String, dynamic> json, {this.data})
       : this.code = json[ResultDataConfig.config.FIELD_CODE]?.toString() ?? "",
         this.msg = json[ResultDataConfig.config.FIELD_MSG],
         this.content = json[ResultDataConfig.config.FIELD_CONTENT];
 
-  T getData(T instance) {
+  T? getData(T instance) {
     if (data != null) {
       return data;
     }

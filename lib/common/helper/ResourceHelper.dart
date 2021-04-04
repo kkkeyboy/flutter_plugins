@@ -9,7 +9,7 @@ class ImageHelper {
   static const String baseUrl = 'http://www.meetingplus.cn';
   static const String imagePrefix = '$baseUrl/uimg/';
 
-  static String wrapUrl(String url) {
+  static String wrapUrl(String? url) {
     if (LogUtil.isInDebugMode && (url == null || url.isEmpty)) {
       return randomUrl();
     }
@@ -21,17 +21,17 @@ class ImageHelper {
   }
 
   static String wrapAssets(String url) {
-    if (url?.startsWith("http") == true) {
+    if (url.startsWith("http") == true) {
       return url;
     }
     return "assets/images/" + url;
   }
 
-  static Widget placeHolder({double width, double height}) {
+  static Widget placeHolder({required double width, double? height}) {
     return SizedBox(width: width, height: height, child: CupertinoActivityIndicator(radius: min(10.0, width / 3)));
   }
 
-  static Widget error({double width, double height, double size}) {
+  static Widget error({double? width, double? height, double? size}) {
     return SizedBox(
         width: width,
         height: height,

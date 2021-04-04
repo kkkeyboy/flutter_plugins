@@ -9,24 +9,24 @@ class LogUtil {
   static void init({
     String tag = _defTag,
     int maxLen = 128,
-    bool isDebug,
+    bool? isDebug,
   }) {
     _tagValue = tag;
     _debugMode = isDebug ?? isInDebugMode;
     _maxLen = maxLen;
   }
 
-  static void e(Object object, {String tag}) {
+  static void e(Object object, {String? tag}) {
     _printLog(tag, ' e ', object);
   }
 
-  static void v(Object object, {String tag}) {
+  static void v(Object object, {String? tag}) {
     if (_debugMode) {
       _printLog(tag, ' v ', object);
     }
   }
 
-  static void _printLog(String tag, String stag, Object object) {
+  static void _printLog(String? tag, String stag, Object object) {
     String da = object.toString();
     tag = tag ?? _tagValue;
     if (da.length <= _maxLen) {

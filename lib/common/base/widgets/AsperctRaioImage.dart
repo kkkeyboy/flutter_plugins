@@ -15,34 +15,34 @@ enum AsperctRaioImageType { NETWORK, FILE, ASSET, MEMORY }
 ///有宽高的Image
 // ignore: must_be_immutable
 class AsperctRaioImage extends StatelessWidget {
-  String url;
-  File file;
-  Uint8List bytes;
+ late String url;
+ late File file;
+ late Uint8List bytes;
   final ImageProvider provider;
-  AsperctRaioImageType type;
-  AsyncImageWidgetBuilder<ui.Image> builder;
-  AsyncImageFileWidgetBuilder<ui.Image> filebBuilder;
-  AsyncImageMemoryWidgetBuilder<ui.Image> memoryBuilder;
+  late AsperctRaioImageType type;
+ late AsyncImageWidgetBuilder<ui.Image> builder;
+ late AsyncImageFileWidgetBuilder<ui.Image> filebBuilder;
+ late AsyncImageMemoryWidgetBuilder<ui.Image> memoryBuilder;
 
-  AsperctRaioImage.network(url, {Key key, @required this.builder})
+  AsperctRaioImage.network(url, {Key? key, required this.builder})
       : provider = NetworkImage(url),
         type = AsperctRaioImageType.NETWORK,
         this.url = url;
 
   AsperctRaioImage.file(
     file, {
-    Key key,
-    @required this.filebBuilder,
+    Key? key,
+    required this.filebBuilder,
   })  : provider = FileImage(file),
         type = AsperctRaioImageType.FILE,
         this.file = file;
 
-  AsperctRaioImage.asset(name, {Key key, @required this.builder})
+  AsperctRaioImage.asset(name, {Key? key, required this.builder})
       : provider = AssetImage(name),
         type = AsperctRaioImageType.ASSET,
         this.url = name;
 
-  AsperctRaioImage.memory(bytes, {Key key, @required this.memoryBuilder})
+  AsperctRaioImage.memory(bytes, {Key? key, required this.memoryBuilder})
       : provider = MemoryImage(bytes),
         type = AsperctRaioImageType.MEMORY,
         this.bytes = bytes;
@@ -52,13 +52,13 @@ class AsperctRaioImage extends StatelessWidget {
     final ImageConfiguration config = createLocalImageConfiguration(context);
     final Completer<ui.Image> completer = Completer<ui.Image>();
     final ImageStream stream = provider.resolve(config);
-    ImageStreamListener listener;
+    late ImageStreamListener listener;
     listener = ImageStreamListener(
       (ImageInfo image, bool sync) {
         completer.complete(image.image);
         stream.removeListener(listener);
       },
-      onError: (dynamic exception, StackTrace stackTrace) {
+      onError: (dynamic exception, StackTrace? stackTrace) {
         completer.complete();
         stream.removeListener(listener);
         FlutterError.reportError(FlutterErrorDetails(

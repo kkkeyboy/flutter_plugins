@@ -35,7 +35,7 @@ class TaskCompletedEvent extends WorkerEvent {
 class TaskFailedEvent extends WorkerEvent {
   final Task task;
   final dynamic error;
-  final StackTrace stackTrace;
+  final StackTrace? stackTrace;
 
   TaskFailedEvent(WorkerIsolate isolate, this.task, this.error,
       [this.stackTrace])

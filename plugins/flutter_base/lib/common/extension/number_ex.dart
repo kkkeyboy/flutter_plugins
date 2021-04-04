@@ -2,16 +2,16 @@ import 'package:flutter_base/common/helper/Rational.dart';
 import 'package:flutter_base/common/helper/date_helper.dart';
 import 'package:flutter_base/common/helper/dimens_helper.dart';
 
-extension DoubleEx on num {
+extension DoubleEx on num? {
   double get px {
-    return DimensHelper.setPx(this.toDouble());
+    return DimensHelper.setPx(this!.toDouble());
   }
 
   double get rpx {
-    return DimensHelper.setRpx(this.toDouble());
+    return DimensHelper.setRpx(this!.toDouble());
   }
 
-  String formatDateTime({String emptyPlace = "", bool isUtc, String format}) {
+  String formatDateTime({String emptyPlace = "", bool? isUtc, String? format}) {
     return this == null ? emptyPlace : DateUtil.formatDateStr(this.toString(), isUtc: isUtc, format: format);
   }
 
@@ -21,7 +21,7 @@ extension DoubleEx on num {
 
   String toAsFixed(int position) {
     if ((this.toString().length - this.toString().lastIndexOf(".") - 1) < position) {
-      return Rational.parse(this.toStringAsFixed(position).substring(0, this.toString().lastIndexOf(".") + position + 1)).toDecimalString();
+      return Rational.parse(this!.toStringAsFixed(position).substring(0, this.toString().lastIndexOf(".") + position + 1)).toDecimalString();
     } else {
       return Rational.parse(this.toString().substring(0, this.toString().lastIndexOf(".") + position + 1)).toDecimalString();
     }
@@ -44,35 +44,35 @@ extension DoubleEx on num {
   }
 
 // +
-  num add(num value) {
+  num add(num? value) {
     return this == null
         ? value == null
-            ? null
+            ? 0
             : value
-        : this + value;
+        : this! + value!;
   }
 
 //-
-  num subtract(num value) {
+  num subtract(num? value) {
     return this == null
-        ? null
+        ? 0
         : value == null
-            ? this
-            : this - value;
+            ? this!
+            : this! - value;
   }
 
 //*
-  num multiply(num value) {
-    return this == null || value == null ? null : this * value;
+  num multiply(num? value) {
+    return this == null || value == null ? 0 : this! * value;
   }
 
 // /
-  num divide(num value) {
+  num divide(num? value) {
     return this == null
-        ? null
+        ? 0
         : value == null || value == 0
-            ? this
-            : this / value;
+            ? this!
+            : this! / value;
   }
 
   // double operator -(num other) {

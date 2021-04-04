@@ -30,7 +30,7 @@ void main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   final packageInfo = await PackageInfo.fromPlatform();
-  runApp(App(appName: packageInfo.appName ?? "App"));
+  runApp(App(appName: packageInfo.appName));
 
   // Android状态栏透明 splash为白色,所以调整状态栏文字为黑色
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarBrightness: Brightness.dark));

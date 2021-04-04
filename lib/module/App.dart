@@ -24,7 +24,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 class App extends StatelessWidget {
   final String appName;
-  const App({Key key, @required this.appName});
+  const App({Key? key, required this.appName});
   
   @override
   Widget build(BuildContext context) {

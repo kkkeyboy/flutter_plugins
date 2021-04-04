@@ -5,7 +5,7 @@ part 'MainApi.g.dart';
 
 @RestApi()
 abstract class MainApi {
-  factory MainApi(Dio dio, {String baseUrl}) = _MainApi;
+  factory MainApi(Dio dio, {String? baseUrl}) = _MainApi;
 
   @GET('/center/api/v1/email/verifycode/{email}')
   Future<ResultData> sendEmail(@Path("email") String email);

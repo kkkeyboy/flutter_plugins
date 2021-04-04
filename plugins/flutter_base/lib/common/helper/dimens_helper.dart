@@ -3,11 +3,11 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 
 class DimensHelper {
-  static MediaQueryData _mediaQueryData;
-  static double screenWidth;
-  static double screenHeight;
-  static double rpx;
-  static double px;
+  static late MediaQueryData _mediaQueryData;
+  static late double screenWidth;
+  static late double screenHeight;
+  static late double rpx;
+  static late double px;
 
   static void initialize(BuildContext context, {double standardWidth = 750}) {
     _mediaQueryData = MediaQuery.of(context);

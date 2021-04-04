@@ -15,7 +15,7 @@ mixin BasePageMixin {
   @protected
   final bool hasAppBar = true;
   @protected
-  final double barHeight = null;
+  final double? barHeight = null;
 
   @protected
   void initWithContext(BuildContext context) {}
@@ -26,11 +26,11 @@ mixin BasePageMixin {
   @protected
   final bool hasBgImg = false;
 
-  final Color bgColor = null;
-  final String bgImg = null;
-  final Color appBarBgColor = null;
-  final Color appBarFgColor = null;
-  final Color appBarLabelFgColor = null;
+  final Color? bgColor = null;
+  final String? bgImg = null;
+  final Color? appBarBgColor = null;
+  final Color? appBarFgColor = null;
+  final Color? appBarLabelFgColor = null;
 
   PageConfigData getConfig(BuildContext context) {
     return BasePageConfig.of(context).checkWith(
@@ -43,7 +43,7 @@ mixin BasePageMixin {
   }
 
   @protected
-  PreferredSizeWidget buildAppBar(BuildContext context) {
+  PreferredSizeWidget? buildAppBar(BuildContext context) {
     return hasAppBar
         ? new AppBar(
             toolbarHeight: barHeight,
@@ -73,20 +73,20 @@ mixin BasePageMixin {
       titleLabel,
       style: Theme.of(context)
           .primaryTextTheme
-          .headline6
+          .headline6!
           .copyWith(color: getConfig(context).appBarLabelFgColor ?? getConfig(context).appBarFgColor),
     );
   }
 
-  List<Widget> buildAppBarAction(BuildContext context) {
+  List<Widget>? buildAppBarAction(BuildContext context) {
     return null;
   }
 
-  Widget buildAppBarLeading(BuildContext context) {
+  Widget? buildAppBarLeading(BuildContext context) {
     return null;
   }
 
-  Widget buildBottomNavigationBar(BuildContext context) {
+  Widget? buildBottomNavigationBar(BuildContext context) {
     return null;
   }
 
@@ -97,7 +97,7 @@ mixin BasePageMixin {
     if (MediaQuery.of(context).viewInsets.bottom > 0) {
       FocusScope.of(context).requestFocus(FocusNode());
       if (MediaQuery.of(context).viewInsets.bottom > 0) {
-        FocusManager.instance.primaryFocus.unfocus();
+        FocusManager.instance.primaryFocus?.unfocus();
       }
       debugPrint("收起键盘。。。");
     }
@@ -107,7 +107,7 @@ mixin BasePageMixin {
   Widget buildBody(BuildContext context);
 
   @protected
-  Widget wrapBody(BuildContext context) => null;
+  Widget? wrapBody(BuildContext context) => null;
 
   @protected
   Widget buildBodyOutside(BuildContext context, Widget body) => body;
@@ -139,7 +139,7 @@ mixin BasePageMixin {
         //   begin: Alignment.topCenter,
         //   end: Alignment.bottomCenter,
         // ),
-        image: hasBgImg && bgImage?.isNotEmpty == true ? DecorationImage(image: AssetImage(bgImage), fit: BoxFit.fill) : null,
+        image: hasBgImg && bgImage?.isNotEmpty == true ? DecorationImage(image: AssetImage(bgImage!), fit: BoxFit.fill) : null,
         color: hasBgImg && bgImage?.isNotEmpty == true ? null : getConfig(context).bgColor,
       ),
     );
@@ -147,7 +147,7 @@ mixin BasePageMixin {
 }
 
 abstract class BasePageStateless extends StatelessWidget with BasePageMixin {
-  BasePageStateless({Key key}) : super(key: key);
+  BasePageStateless({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +165,7 @@ abstract class BasePageState<T extends BasePage> extends State<T> with BasePageM
   @override
   bool get wantKeepAlive => false;
 
-  StreamSubscription _eventBusSubscription;
+  StreamSubscription? _eventBusSubscription;
 
   @mustCallSuper
   @override
@@ -186,8 +186,8 @@ abstract class BasePageState<T extends BasePage> extends State<T> with BasePageM
     super.deactivate();
   }
 
-  HideCallback _popupHideCallback;
-  void showLoading({String msg, bool canCancel = true}) {
+  HideCallback? _popupHideCallback;
+  void showLoading({String? msg, bool canCancel = true}) {
     hideLoading();
     if (mounted) {
       _popupHideCallback = showLoadingPopup(context: context, messageTxt: msg, backButtonClose: canCancel);
@@ -232,19 +232,19 @@ abstract class BaseLoadDataState<T extends BasePage, VM extends BaseLoadDataView
   @protected
   final bool errorEnableReload = true;
   @protected
-  final VoidCallback onPressedEmpty = null;
+  final VoidCallback? onPressedEmpty = null;
   @protected
-  VoidCallback onPressedError;
+  VoidCallback? onPressedError;
   @protected
-  final String emptyTxt = null;
+  final String? emptyTxt = null;
 
   VM onCreateViewModel();
-  VM _viewModel;
+  VM? _viewModel;
   VM get viewModel {
     if (_viewModel == null) {
       _viewModel = onCreateViewModel();
     }
-    return _viewModel;
+    return _viewModel!;
   }
 
   // @override
@@ -324,15 +324,15 @@ abstract class BaseLoadRefreshDataState<T extends BasePage, VM extends BaseLoadR
 
   bool get showWithOutNoData => true;
 
-  ScrollPhysics refreshPhysics;
+  ScrollPhysics? refreshPhysics;
 
   _handlerEmptyAndError() {
     viewModel.setBusy();
     viewModel.refresh();
   }
 
-  Widget buildRefreshWithOutHeader(BuildContext context) => null;
-  Widget buildRefreshWithOutFooter(BuildContext context) => null;
+  Widget? buildRefreshWithOutHeader(BuildContext context) => null;
+  Widget? buildRefreshWithOutFooter(BuildContext context) => null;
 
   Widget buildRefreshOutside(BuildContext context) => buildRefreshWidget(context);
 
@@ -416,10 +416,10 @@ abstract class BaseLoadListDataState<T extends BasePage, VM extends BaseLoadList
     viewModel.refresh();
   }
 
-  Widget buildRefreshWithOutHeader(BuildContext context) => null;
-  Widget buildRefreshWithOutFooter(BuildContext context) => null;
+  Widget? buildRefreshWithOutHeader(BuildContext context) => null;
+  Widget? buildRefreshWithOutFooter(BuildContext context) => null;
 
-  ScrollPhysics refreshPhysics() => null;
+  ScrollPhysics? refreshPhysics() => null;
 
   Widget buildRefreshOutside(BuildContext context) => buildRefreshWidget(context);
   Widget buildRefreshWidget(BuildContext context) {
@@ -492,7 +492,7 @@ abstract class BaseLoadListDataState<T extends BasePage, VM extends BaseLoadList
 
 class BasePageConfig extends InheritedWidget {
   final PageConfigData data;
-  BasePageConfig({Widget child, this.data}) : super(child: child);
+  BasePageConfig({required Widget child,required this.data}) : super(child: child);
 
   @override
   bool updateShouldNotify(BasePageConfig oldWidget) {
@@ -510,11 +510,11 @@ class BasePageConfig extends InheritedWidget {
 
 @immutable
 class PageConfigData {
-  final Color bgColor;
-  final String bgImg;
-  final Color appBarBgColor;
-  final Color appBarFgColor;
-  final Color appBarLabelFgColor;
+  final Color? bgColor;
+  final String? bgImg;
+  final Color? appBarBgColor;
+  final Color? appBarFgColor;
+  final Color? appBarLabelFgColor;
 
   const PageConfigData({
     this.bgColor = Colors.white,
@@ -524,7 +524,7 @@ class PageConfigData {
     this.appBarLabelFgColor,
   });
 
-  PageConfigData copyWith({Color bgColor, String bgImg, Color appBarBgColor, Color appBarLabelFgColor, Color appBarFgColor}) {
+  PageConfigData copyWith({Color? bgColor, String? bgImg, Color? appBarBgColor, Color? appBarLabelFgColor, Color? appBarFgColor}) {
     return PageConfigData(
       bgColor: bgColor ?? this.bgColor,
       bgImg: bgImg ?? this.bgImg,
@@ -535,7 +535,7 @@ class PageConfigData {
   }
 
   PageConfigData checkWith(
-      {Color bgColor, String bgImg, Color appBarBgColor, Color appBarFgColor, Color appBarLabelFgColor, bool hasBgImg}) {
+      {Color? bgColor, String? bgImg, Color? appBarBgColor, Color? appBarFgColor, Color? appBarLabelFgColor, bool hasBgImg = false}) {
     return PageConfigData(
       bgColor: bgColor ?? this.bgColor,
       bgImg: hasBgImg ? bgImg ?? this.bgImg : "",

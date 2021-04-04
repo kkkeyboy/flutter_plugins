@@ -1,5 +1,5 @@
 extension IterableEx<E> on Iterable<E> {
-  E get firstOrNull {
+  E? get firstOrNull {
     Iterator<E> it = iterator;
     if (!it.moveNext()) {
       return null;
