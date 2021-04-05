@@ -17,7 +17,7 @@ dependencies:
 
   expressions: ^0.2.1
   build_runner: ^1.12.2
-  json_serializable: ^4.0.1
+  json_serializable: ^4.1.0
   json_annotation: ^4.0.1
 
 dev_dependencies:

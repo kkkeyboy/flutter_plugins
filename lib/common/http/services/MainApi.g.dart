@@ -7,9 +7,7 @@ part of 'MainApi.dart';
 // **************************************************************************
 
 class _MainApi implements MainApi {
-  _MainApi(this._dio, {this.baseUrl}) {
-    ArgumentError.checkNotNull(_dio, '_dio');
-  }
+  _MainApi(this._dio, {this.baseUrl});
 
   final Dio _dio;
 
@@ -17,92 +15,124 @@ class _MainApi implements MainApi {
 
   @override
   Future<ResultData<dynamic>> sendEmail(email) async {
-    ArgumentError.checkNotNull(email, 'email');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    Response response;
     try {
-      response = await _dio.request('/center/api/v1/email/verifycode/$email',
-          queryParameters: queryParameters,
-          options: Options(
-              method: 'GET',
-              headers: <String, dynamic>{},
-              extra: _extra,),
-          data: _data);
-    } on DioError catch (e) {
+      Response response;
+
+      response = await _dio.fetch(_setStreamType<ResultData<dynamic>>(
+          Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+              .compose(_dio.options, '/center/api/v1/email/verifycode/$email',
+                  queryParameters: queryParameters, data: _data)
+              .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+      if (response.data is DioError) {
+        return HanldeResultError.resultError(response.data);
+      }
+      final subDataResult =
+          response.data[ResultDataConfig.config.FIELD_CONTENT];
+      final statusCode =
+          "${response.data[ResultDataConfig.config.FIELD_CODE] ?? ''}";
+      if (ResultDataConfig.config.SUCCESS_CODE == statusCode) {
+        final subData = subDataResult;
+        return new ResultData(response.data, response.statusCode,
+            headers: response.headers, subData: subData);
+      } else {
+        return new ResultData(
+          response.data,
+          response.statusCode,
+          headers: response.headers,
+        );
+      }
+    } catch (e) {
       return HanldeResultError.resultError(e);
     }
-    if (response.data is DioError) {
-      return HanldeResultError.resultError(response.data);
-    }
-
-    final subDataResult = response.data[CommonData.FIELD_CONTENT];
-
-    final subData = subDataResult;
-    return new ResultData(response.data, response.statusCode,
-        headers: response.headers, subData: subData);
   }
 
   @override
   Future<ResultData<dynamic>> login(map) async {
-    ArgumentError.checkNotNull(map, 'map');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(map );
-    _data.removeWhere((k, v) => v == null);
-    Response response;
+    _data.addAll(map);
     try {
-      response = await _dio.request('/center/api/v1/user',
-          queryParameters: queryParameters,
-          options: Options(
-              method: 'PUT',
-              headers: <String, dynamic>{},
-              extra: _extra,),
-          data: _data);
-    } on DioError catch (e) {
+      Response response;
+
+      response = await _dio.fetch(_setStreamType<ResultData<dynamic>>(
+          Options(method: 'PUT', headers: <String, dynamic>{}, extra: _extra)
+              .compose(_dio.options, '/center/api/v1/user',
+                  queryParameters: queryParameters, data: _data)
+              .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+      if (response.data is DioError) {
+        return HanldeResultError.resultError(response.data);
+      }
+      final subDataResult =
+          response.data[ResultDataConfig.config.FIELD_CONTENT];
+      final statusCode =
+          "${response.data[ResultDataConfig.config.FIELD_CODE] ?? ''}";
+      if (ResultDataConfig.config.SUCCESS_CODE == statusCode) {
+        final subData = subDataResult;
+        return new ResultData(response.data, response.statusCode,
+            headers: response.headers, subData: subData);
+      } else {
+        return new ResultData(
+          response.data,
+          response.statusCode,
+          headers: response.headers,
+        );
+      }
+    } catch (e) {
       return HanldeResultError.resultError(e);
     }
-    if (response.data is DioError) {
-      return HanldeResultError.resultError(response.data);
-    }
-
-    final subDataResult = response.data[CommonData.FIELD_CONTENT];
-
-    final subData = subDataResult;
-    return new ResultData(response.data, response.statusCode,
-        headers: response.headers, subData: subData);
   }
 
   @override
   Future<ResultData<dynamic>> regist(map) async {
-    ArgumentError.checkNotNull(map, 'map');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(map );
-    _data.removeWhere((k, v) => v == null);
-    Response response;
+    _data.addAll(map);
     try {
-      response = await _dio.request('/center/api/v1/user',
-          queryParameters: queryParameters,
-          options: Options(
-              method: 'POST',
-              headers: <String, dynamic>{},
-              extra: _extra,),
-          data: _data);
-    } on DioError catch (e) {
+      Response response;
+
+      response = await _dio.fetch(_setStreamType<ResultData<dynamic>>(
+          Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
+              .compose(_dio.options, '/center/api/v1/user',
+                  queryParameters: queryParameters, data: _data)
+              .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+      if (response.data is DioError) {
+        return HanldeResultError.resultError(response.data);
+      }
+      final subDataResult =
+          response.data[ResultDataConfig.config.FIELD_CONTENT];
+      final statusCode =
+          "${response.data[ResultDataConfig.config.FIELD_CODE] ?? ''}";
+      if (ResultDataConfig.config.SUCCESS_CODE == statusCode) {
+        final subData = subDataResult;
+        return new ResultData(response.data, response.statusCode,
+            headers: response.headers, subData: subData);
+      } else {
+        return new ResultData(
+          response.data,
+          response.statusCode,
+          headers: response.headers,
+        );
+      }
+    } catch (e) {
       return HanldeResultError.resultError(e);
     }
-    if (response.data is DioError) {
-      return HanldeResultError.resultError(response.data);
+  }
+
+  RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
+    if (T != dynamic &&
+        !(requestOptions.responseType == ResponseType.bytes ||
+            requestOptions.responseType == ResponseType.stream)) {
+      if (T == String) {
+        requestOptions.responseType = ResponseType.plain;
+      } else {
+        requestOptions.responseType = ResponseType.json;
+      }
     }
-
-    final subDataResult = response.data[CommonData.FIELD_CONTENT];
-
-    final subData = subDataResult;
-    return new ResultData(response.data, response.statusCode,
-        headers: response.headers, subData: subData);
+    return requestOptions;
   }
 }

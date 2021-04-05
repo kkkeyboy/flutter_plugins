@@ -135,11 +135,11 @@ class BaseViewModel with ChangeNotifier {
 
   /// 显示错误消息
   showErrorMessage(context, {String? message}) {
-    if (viewStateError != null || message != null) {
-      if (viewStateError!.isNetworkTimeOut) {
+    if (_viewStateError != null || message != null) {
+      if (_viewStateError?.isNetworkTimeOut) {
         message ??= "";
       } else {
-        message ??= viewStateError?.message;
+        message ??= _viewStateError?.message;
       }
       // Future.microtask(() {
       //   showToast(message, context: context);

@@ -18,4 +18,8 @@ class DataRepo {
       ..["email"] = "email"
       ..["pwd"] = "pwd");
   }
+
+   static Future test() {
+    return ApiControls.apiTest.getTags();
+  }
 }

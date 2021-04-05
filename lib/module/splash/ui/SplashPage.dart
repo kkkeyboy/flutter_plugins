@@ -116,7 +116,7 @@ class AnimatedLogo extends AnimatedWidget {
       opacity: animation.value,
       duration: Duration(milliseconds: 400),
       child: Image.asset(
-        ImageHelper.wrapAssets('icon1.png'),
+        ImageHelper.wrapAssets('icSplash.png'),
         width: 200.rpx,
         height: 200.rpx,
       ),

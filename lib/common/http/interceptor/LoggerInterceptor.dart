@@ -2,8 +2,8 @@ import 'package:flutter_base/flutter_base.dart';
 
 class LoggerInterceptor extends Interceptor {
   @override
-  Future onRequest(RequestOptions options,
-    RequestInterceptorHandler handler) async {
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+    handler.next(options);
     String requestStr = "\n==================== REQUEST ====================\n"
         "- URL:\n${options.uri}\n"
         "- METHOD: ${options.method}\n";
@@ -22,17 +22,16 @@ class LoggerInterceptor extends Interceptor {
     }
 
     requestStr.log("HTTP");
-    return options;
   }
 
   @override
-  Future onError(DioError err,
-    ErrorInterceptorHandler handler) async {
+  void onError(DioError err, ErrorInterceptorHandler handler) async {
+    handler.next(err);
     String errorStr = "\n==================== RESPONSE ====================\n"
         "- URL:\n${err.requestOptions.baseUrl + err.requestOptions.path}\n"
         "- METHOD: ${err.requestOptions.method}\n";
 
-    errorStr += "- HEADER:\n${err.response?.headers?.map?.mapToStructureString()}\n";
+    errorStr += "- HEADER:\n${err.response?.headers?.map?.mapToStructureString() ?? '{}'}\n";
     if (err.response != null && err.response?.data != null) {
       '╔ ${err.type.toString()}'.log("HTTP");
       errorStr += "- ERROR:\n${_parseResponse(err.response!)}\n";
@@ -41,16 +40,15 @@ class LoggerInterceptor extends Interceptor {
       errorStr += "- MSG: ${err.message}\n";
     }
     errorStr.log("HTTP");
-    return err;
   }
 
   @override
-  Future onResponse(Response response,
-    ResponseInterceptorHandler handler) async {
+  void onResponse(Response response, ResponseInterceptorHandler handler) async {
+    handler.next(response);
     String responseStr = "\n==================== RESPONSE ====================\n"
         "- URL:\n${response.requestOptions.uri}\n";
     responseStr += "- HEADER:\n{";
-    response.headers?.forEach((key, list) => responseStr += "\n  " + "\"$key\" : \"$list\",");
+    response.headers.forEach((key, list) => responseStr += "\n  " + "\"$key\" : \"$list\",");
     responseStr += "\n}\n";
     responseStr += "- STATUS: ${response.statusCode}\n";
 
@@ -58,7 +56,6 @@ class LoggerInterceptor extends Interceptor {
       responseStr += "- BODY:\n ${_parseResponse(response)}";
     }
     printWrapped(responseStr);
-    return response;
   }
 
   void printWrapped(String text) {

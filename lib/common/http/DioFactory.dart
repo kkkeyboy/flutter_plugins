@@ -16,8 +16,10 @@ class DioFactory {
   factory DioFactory() => _instance;
 
   Dio? _dio;
-  Dio getDio(String apiHost) {
-    _dio!.options.baseUrl = apiHost;
+  Dio getDio([String? apiHost]) {
+    if (!apiHost.isNullOrEmpty) {
+      _dio!.options.baseUrl = apiHost!;
+    }
     return _dio!;
   }
 
