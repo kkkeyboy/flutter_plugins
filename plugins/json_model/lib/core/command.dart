@@ -68,8 +68,9 @@ class Commands {
         }
 
         if (value is Map) {
-          self.type = key.toTitleCase();
-          self.nestedClasses.add(JsonModel.fromMap(key, value));
+          final realKey = '$fileName${key.toTitleCase()}'.toTitleCase();
+          self.type = realKey;
+          self.nestedClasses.add(JsonModel.fromMap(realKey, value));
           return self;
         }
 
@@ -80,7 +81,7 @@ class Commands {
             if (nestedFirst is Map) {
               final keyTmp = (nestedFirst['\$key'] ?? key) as String;
               nestedFirst.remove('\$keyTmp');
-              final realKey = '$fileName${keyTmp.toTitleCase()}';
+              final realKey = '$fileName${keyTmp.toTitleCase()}'.toTitleCase();
               self.type = 'List<${realKey}>';
               self.type = 'List<List<${realKey}>>';
               self.nestedClasses.add(JsonModel.fromMap(realKey, nestedFirst));
@@ -88,7 +89,7 @@ class Commands {
           } else if (firstListValue is Map) {
             final keyTmp = (firstListValue['\$key'] ?? key) as String;
             firstListValue.remove('\$keyTmp');
-            final realKey = '$fileName${keyTmp.toTitleCase()}';
+            final realKey = '$fileName${keyTmp.toTitleCase()}'.toTitleCase();
             self.type = 'List<${realKey}>';
             self.nestedClasses.add(JsonModel.fromMap(realKey, firstListValue));
           } else {

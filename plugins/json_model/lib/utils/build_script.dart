@@ -14,7 +14,7 @@ import 'package:build_runner/src/logging/std_io_logging.dart';
 class BuildScript {
   BuildScript(this.args);
   var localCommands = [CleanCommand(), GenerateBuildScript()];
-  
+
   BuildCommandRunner commandRunner;
   List<String> args;
 
@@ -37,8 +37,7 @@ class BuildScript {
     var commandName = parsedArgs.command?.name;
 
     if (parsedArgs.rest.isNotEmpty) {
-      print(yellow
-          .wrap('Could not find a command named "${parsedArgs.rest[0]}".'));
+      print(yellow.wrap('Could not find a command named "${parsedArgs.rest[0]}".'));
       print('');
       print(commandRunner.usageWithoutDescription);
       exitCode = ExitCode.usage.code;
@@ -54,8 +53,7 @@ class BuildScript {
     if (localCommandNames.contains(commandName)) {
       exitCode = await commandRunner.runCommand(parsedArgs);
     } else {
-      while (
-          (exitCode = await generateAndRun(args)) == ExitCode.tempFail.code) {}
+      while ((exitCode = await generateAndRun(args)) == ExitCode.tempFail.code) {}
     }
     await logListener?.cancel();
   }

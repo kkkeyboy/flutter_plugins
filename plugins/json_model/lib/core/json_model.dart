@@ -20,6 +20,7 @@ class JsonModel {
     imports_raw = dartDeclarations.getImportRaw();
     enums = dartDeclarations.getEnums(className);
     nestedClasses = dartDeclarations.getNestedClasses();
+    print("1111:->${this}");
   }
 
   // model string from json map
