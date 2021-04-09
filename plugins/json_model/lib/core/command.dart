@@ -5,7 +5,7 @@ import 'package:json_model/core/json_model.dart';
 import 'dart_declaration.dart';
 import '../utils/extensions.dart';
 
-typedef Callback = DartDeclaration Function(DartDeclaration self, String testSubject, {String key, dynamic value, String fileName});
+typedef Callback = DartDeclaration Function(DartDeclaration self, String testSubject, {String key, dynamic value, String fileName, String className});
 
 class Command {
   Type type = String;
@@ -27,7 +27,7 @@ class Commands {
     Command(
       prefix: '\@',
       command: 'JsonKey',
-      callback: (DartDeclaration self, String testSubject, {String key, dynamic value, String fileName}) {
+      callback: (DartDeclaration self, String testSubject, {String key, dynamic value, String fileName,String className}) {
         var jsonKey = JsonKeyMutate.fromJsonKeyParamaString(testSubject);
         self.jsonKey &= jsonKey;
         var newDeclaration = DartDeclaration.fromCommand(valueCommands, self, testSubject: value, key: key, value: value);
@@ -42,7 +42,7 @@ class Commands {
     Command(
       prefix: '\@',
       command: 'import',
-      callback: (DartDeclaration self, dynamic testSubject, {String key, dynamic value, String fileName}) {
+      callback: (DartDeclaration self, dynamic testSubject, {String key, dynamic value, String fileName,String className}) {
         self.addImport(value);
         return self;
       },
@@ -50,7 +50,7 @@ class Commands {
     Command(
       prefix: '@',
       command: '_',
-      callback: (DartDeclaration self, dynamic testSubject, {String key, dynamic value, String fileName}) {
+      callback: (DartDeclaration self, dynamic testSubject, {String key, dynamic value, String fileName,String className}) {
         self.type = key.substring(1);
         self.name = value;
         return self;
@@ -59,8 +59,9 @@ class Commands {
     Command(
       prefix: '',
       command: '',
-      callback: (DartDeclaration self, dynamic testSubject, {String key, dynamic value, String fileName}) {
+      callback: (DartDeclaration self, dynamic testSubject, {String key, dynamic value, String fileName,String className}) {
         self.setName(key);
+        print("2222:->${fileName}, ${className}");
 
         if (value == null) {
           self.type = 'dynamic';
@@ -68,9 +69,9 @@ class Commands {
         }
 
         if (value is Map) {
-          final realKey = '$fileName${key.toTitleCase()}'.toTitleCase();
+          final realKey = '$className${key.toTitleCase()}'.toTitleCase();
           self.type = realKey;
-          self.nestedClasses.add(JsonModel.fromMap(realKey, value));
+          self.nestedClasses.add(JsonModel.fromMap(fileName,realKey, value));
           return self;
         }
 
@@ -81,17 +82,17 @@ class Commands {
             if (nestedFirst is Map) {
               final keyTmp = (nestedFirst['\$key'] ?? key) as String;
               nestedFirst.remove('\$keyTmp');
-              final realKey = '$fileName${keyTmp.toTitleCase()}'.toTitleCase();
+              final realKey = '$className${keyTmp.toTitleCase()}'.toTitleCase();
               self.type = 'List<${realKey}>';
               self.type = 'List<List<${realKey}>>';
-              self.nestedClasses.add(JsonModel.fromMap(realKey, nestedFirst));
+              self.nestedClasses.add(JsonModel.fromMap(fileName,realKey, nestedFirst));
             }
           } else if (firstListValue is Map) {
             final keyTmp = (firstListValue['\$key'] ?? key) as String;
             firstListValue.remove('\$keyTmp');
-            final realKey = '$fileName${keyTmp.toTitleCase()}'.toTitleCase();
+            final realKey = '$className${keyTmp.toTitleCase()}'.toTitleCase();
             self.type = 'List<${realKey}>';
-            self.nestedClasses.add(JsonModel.fromMap(realKey, firstListValue));
+            self.nestedClasses.add(JsonModel.fromMap(fileName,realKey, firstListValue));
           } else {
             final listValueType = firstListValue.runtimeType.toString();
             self.type = 'List<$listValueType>';
@@ -119,7 +120,7 @@ class Commands {
     Command(
       prefix: '\$',
       command: '\[\]',
-      callback: (DartDeclaration self, String testSubject, {String key, dynamic value, String fileName}) {
+      callback: (DartDeclaration self, String testSubject, {String key, dynamic value, String fileName,String className}) {
         var typeName = testSubject.substring(3).split('/').last.split('\\').last.toCamelCase();
         var toImport = testSubject.substring(3);
         self.addImport(toImport);
@@ -131,7 +132,7 @@ class Commands {
       prefix: '\$',
       command: '',
       notprefix: '\$\[\]',
-      callback: (DartDeclaration self, String testSubject, {String key, dynamic value, String fileName}) {
+      callback: (DartDeclaration self, String testSubject, {String key, dynamic value, String fileName,String className}) {
         self.setName(key);
 
         var typeName = testSubject.substring(1).split('/').last.split('\\').last.toCamelCase();
@@ -149,7 +150,7 @@ class Commands {
       prefix: '\@datetime',
       command: '',
       notprefix: '\$\[\]',
-      callback: (DartDeclaration self, String testSubject, {String key, dynamic value, String fileName}) {
+      callback: (DartDeclaration self, String testSubject, {String key, dynamic value, String fileName,String className}) {
         self.setName(key);
         self.type = 'DateTime';
         return self;
@@ -159,7 +160,7 @@ class Commands {
       prefix: '\@enum',
       command: ':',
       notprefix: '\$\[\]',
-      callback: (DartDeclaration self, String testSubject, {String key, dynamic value, String fileName}) {
+      callback: (DartDeclaration self, String testSubject, {String key, dynamic value, String fileName,String className}) {
         self.setEnumValues((value as String).substring('@enum:'.length).split(','));
         self.setName(key);
         return self;
@@ -167,7 +168,7 @@ class Commands {
     ),
     Command(
       type: dynamic,
-      callback: (DartDeclaration self, dynamic testSubject, {String key, dynamic value, String fileName}) {
+      callback: (DartDeclaration self, dynamic testSubject, {String key, dynamic value, String fileName,String className}) {
         self.setName(key);
 
         if (value == null) {
@@ -176,7 +177,7 @@ class Commands {
         }
         if (value is Map) {
           self.type = key.toTitleCase();
-          self.nestedClasses.add(JsonModel.fromMap('nested', value));
+          self.nestedClasses.add(JsonModel.fromMap('nested','nested', value));
           return self;
         }
         self.type = value.runtimeType.toString();

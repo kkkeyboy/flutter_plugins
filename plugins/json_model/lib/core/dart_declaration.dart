@@ -6,6 +6,7 @@ import 'package:json_model/core/json_key.dart';
 import 'package:json_model/core/json_model.dart';
 import 'package:json_model/core/model_template.dart';
 import '../utils/extensions.dart';
+import 'null_type.dart';
 
 class DartDeclaration {
   JsonKeyMutate jsonKey;
@@ -19,6 +20,8 @@ class DartDeclaration {
   List<String> enumValues = [];
   List<JsonModel> nestedClasses = [];
   bool get isEnum => enumValues.isNotEmpty;
+
+  NullSafeType nullSafeType;
 
   DartDeclaration({
     this.jsonKey,
@@ -105,18 +108,18 @@ class DartDeclaration {
     imports = LinkedHashSet<String>.from(imports).toList();
   }
 
-  static DartDeclaration fromKeyValue(key, val, {String fileName}) {
+  static DartDeclaration fromKeyValue(key, val, {String fileName,String className}) {
     var dartDeclaration = DartDeclaration();
-    dartDeclaration = fromCommand(Commands.valueCommands, dartDeclaration, testSubject: val, key: key, value: val, fileName: fileName);
+    dartDeclaration = fromCommand(Commands.valueCommands, dartDeclaration, testSubject: val, key: key, value: val, fileName: fileName,className: className);
 
-    dartDeclaration = fromCommand(Commands.keyComands, dartDeclaration, testSubject: key, key: key, value: val, fileName: fileName);
+    dartDeclaration = fromCommand(Commands.keyComands, dartDeclaration, testSubject: key, key: key, value: val, fileName: fileName,className: className);
     if (dartDeclaration.type == null || dartDeclaration.name == null) {
       exit(0);
     }
     return dartDeclaration;
   }
 
-  static DartDeclaration fromCommand(List<Command> commandList, self, {dynamic testSubject, String key, dynamic value, String fileName}) {
+  static DartDeclaration fromCommand(List<Command> commandList, self, {dynamic testSubject, String key, dynamic value, String fileName,String className}) {
     var newSelf = self;
     for (var command in commandList) {
       if (testSubject is String) {
@@ -124,7 +127,7 @@ class DartDeclaration {
           if ((command.prefix != null && command.command != null && testSubject.startsWith(command.prefix + command.command)) ||
               (command.command != null && testSubject.startsWith(command.command))) {
             if (command.notprefix != null && !testSubject.startsWith(command.notprefix) || command.notprefix == null) {
-              newSelf = command.callback(self, testSubject, key: key, value: value, fileName: fileName);
+              newSelf = command.callback(self, testSubject, key: key, value: value, fileName: fileName,className:className);
               break;
             }
           }

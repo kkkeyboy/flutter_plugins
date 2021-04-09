@@ -26,29 +26,29 @@ class Task1Nonesafe extends JsonData {
 }
 
 @JsonSerializable()
-class Task1NonesafeData extends JsonData {
-      Task1NonesafeData();
+class Task1Nonesafe extends JsonData {
+      Task1Nonesafe();
 
   num id;
   String name;
   
   @override
-  convertData(Map<String, dynamic> json) => Task1NonesafeData.fromJson(json);
+  convertData(Map<String, dynamic> json) => Task1Nonesafe.fromJson(json);
 
-  factory Task1NonesafeData.fromJson(Map<String,dynamic> json) => _$Task1NonesafeDataFromJson(json);
-  Map<String, dynamic> toJson() => _$Task1NonesafeDataToJson(this);
+  factory Task1Nonesafe.fromJson(Map<String,dynamic> json) => _$Task1NonesafeFromJson(json);
+  Map<String, dynamic> toJson() => _$Task1NonesafeToJson(this);
 }
 
 @JsonSerializable()
-class Task1NonesafeList extends JsonData {
-      Task1NonesafeList();
+class Task1Nonesafe extends JsonData {
+      Task1Nonesafe();
 
   num id;
   String name;
   
   @override
-  convertData(Map<String, dynamic> json) => Task1NonesafeList.fromJson(json);
+  convertData(Map<String, dynamic> json) => Task1Nonesafe.fromJson(json);
 
-  factory Task1NonesafeList.fromJson(Map<String,dynamic> json) => _$Task1NonesafeListFromJson(json);
-  Map<String, dynamic> toJson() => _$Task1NonesafeListToJson(this);
+  factory Task1Nonesafe.fromJson(Map<String,dynamic> json) => _$Task1NonesafeFromJson(json);
+  Map<String, dynamic> toJson() => _$Task1NonesafeToJson(this);
 }

@@ -24,10 +24,11 @@ class JsonModel {
   }
 
   // model string from json map
-  static JsonModel fromMap(String fileName, Map jsonMap) {
+  static JsonModel fromMap(String fileName,String className, Map jsonMap) {
+     print("1111-2:->${fileName},${className}");
     var dartDeclarations = <DartDeclaration>[];
     jsonMap.forEach((key, value) {
-      var declaration = DartDeclaration.fromKeyValue(key, value, fileName: fileName);
+      var declaration = DartDeclaration.fromKeyValue(key, value, fileName: fileName,className:className);
       return dartDeclarations.add(declaration);
     });
     // add key to templatestring
