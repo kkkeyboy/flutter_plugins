@@ -21,7 +21,7 @@ class DartDeclaration {
   List<JsonModel> nestedClasses = [];
   bool get isEnum => enumValues.isNotEmpty;
 
-  NullSafeType nullSafeType;
+  NullSafeType nullSafeType = NullSafeType.NORMAL;
 
   DartDeclaration({
     this.jsonKey,
@@ -41,7 +41,7 @@ class DartDeclaration {
       declaration += '${getEnum(className).toImport()}\n';
     }
 
-    declaration += '${stringifyDecorator(getDecorator())}$type $name${stringifyAssignment(assignment)};'.trim();
+    declaration += '${stringifyDecorator(getDecorator())}${getNullSafeType()} $name${stringifyAssignment(assignment)};'.trim();
 
     return ModelTemplates.indented(declaration);
   }
@@ -56,6 +56,10 @@ class DartDeclaration {
 
   String getDecorator() {
     return decorators?.join('\n');
+  }
+
+   String getNullSafeType() {
+    return nullSafeType== NullSafeType.NONE_SAFE?  '$type':nullSafeType== NullSafeType.NONE_NULL?  'late $type' : '$type?';
   }
 
   List<String> getImportStrings() {
@@ -108,18 +112,21 @@ class DartDeclaration {
     imports = LinkedHashSet<String>.from(imports).toList();
   }
 
-  static DartDeclaration fromKeyValue(key, val, {String fileName,String className}) {
+  static DartDeclaration fromKeyValue(key, val, {String fileName, String className}) {
     var dartDeclaration = DartDeclaration();
-    dartDeclaration = fromCommand(Commands.valueCommands, dartDeclaration, testSubject: val, key: key, value: val, fileName: fileName,className: className);
+    dartDeclaration = fromCommand(Commands.valueCommands, dartDeclaration,
+        testSubject: val, key: key, value: val, fileName: fileName, className: className);
 
-    dartDeclaration = fromCommand(Commands.keyComands, dartDeclaration, testSubject: key, key: key, value: val, fileName: fileName,className: className);
+    dartDeclaration =
+        fromCommand(Commands.keyComands, dartDeclaration, testSubject: key, key: key, value: val, fileName: fileName, className: className);
     if (dartDeclaration.type == null || dartDeclaration.name == null) {
       exit(0);
     }
     return dartDeclaration;
   }
 
-  static DartDeclaration fromCommand(List<Command> commandList, self, {dynamic testSubject, String key, dynamic value, String fileName,String className}) {
+  static DartDeclaration fromCommand(List<Command> commandList, self,
+      {dynamic testSubject, String key, dynamic value, String fileName, String className}) {
     var newSelf = self;
     for (var command in commandList) {
       if (testSubject is String) {
@@ -127,7 +134,7 @@ class DartDeclaration {
           if ((command.prefix != null && command.command != null && testSubject.startsWith(command.prefix + command.command)) ||
               (command.command != null && testSubject.startsWith(command.command))) {
             if (command.notprefix != null && !testSubject.startsWith(command.notprefix) || command.notprefix == null) {
-              newSelf = command.callback(self, testSubject, key: key, value: value, fileName: fileName,className:className);
+              newSelf = command.callback(self, testSubject, key: key, value: value, fileName: fileName, className: className);
               break;
             }
           }

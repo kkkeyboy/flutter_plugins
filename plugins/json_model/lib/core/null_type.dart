@@ -5,7 +5,7 @@ enum NullSafeType {
 }
 
 extension NullSafeFileSuffix on NullSafeType {
-  String getSuffix(NullSafeType type) {
+  static String getSuffix(NullSafeType type) {
     switch (type) {
       case NullSafeType.NONE_SAFE:
         return "nonesafe";
@@ -16,7 +16,7 @@ extension NullSafeFileSuffix on NullSafeType {
     }
   }
 
-  NullSafeType getType(String fileName) {
+  static NullSafeType getType(String fileName) {
     final suffix = fileName.split("_").lastWhere(
           (element) => true,
           orElse: () => "",
@@ -30,12 +30,12 @@ extension NullSafeFileSuffix on NullSafeType {
     return NullSafeType.NORMAL;
   }
 
-  bool _equals(
+  static bool _equals(
     String first,
     String other, {
     bool ignoreCase = false,
   }) {
-    if (this == null) return other == null;
+    if (first == null) return other == null;
     return other != null && first.length == other.length && (!ignoreCase ? first == other : first.toUpperCase() == other.toUpperCase());
   }
 }

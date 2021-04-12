@@ -12,9 +12,9 @@ class JsonModel {
   String enumConverters;
   String nestedClasses;
 
-  JsonModel(String fileName, List<DartDeclaration> dartDeclarations) {
+  JsonModel(String fileName,String classNameTmp, List<DartDeclaration> dartDeclarations) {
     this.fileName = fileName;
-    className = fileName.toTitleCase();
+    className = classNameTmp.toTitleCase();
     declaration = dartDeclarations.toDeclarationStrings(className);
     imports = dartDeclarations.toImportStrings();
     imports_raw = dartDeclarations.getImportRaw();
@@ -33,7 +33,7 @@ class JsonModel {
     });
     // add key to templatestring
     // add valuetype to templatestring
-    return JsonModel(fileName, dartDeclarations);
+    return JsonModel(fileName,className, dartDeclarations);
   }
 
   @override

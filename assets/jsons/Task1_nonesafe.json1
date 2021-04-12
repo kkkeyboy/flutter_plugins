@@ -5,13 +5,13 @@
     "createdAt": "",
     "test": "heh",
     "data": {
-        "id": 2,
-        "name": ""
+        "dataid": 2,
+        "dataname": ""
     },
     "list": [
         {
-            "id": 2,
-            "name": ""
+            "listid": 2,
+            "listname": ""
         }
     ]
 }
