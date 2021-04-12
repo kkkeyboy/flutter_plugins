@@ -94,9 +94,10 @@ mixin BasePageMixin {
   hideInputKeyboard(BuildContext context) {
     FocusScope.of(context).requestFocus(FocusNode());
     // if (FocusScope.of(context).focusedChild != null) //判断获取焦点child时灵时不灵
-    if (MediaQuery.of(context).viewInsets.bottom > 0) {
+    final mediaQueryData = MediaQuery.maybeOf(context);
+    if (mediaQueryData != null && mediaQueryData.viewInsets.bottom > 0) {
       FocusScope.of(context).requestFocus(FocusNode());
-      if (MediaQuery.of(context).viewInsets.bottom > 0) {
+      if (mediaQueryData.viewInsets.bottom > 0) {
         FocusManager.instance.primaryFocus?.unfocus();
       }
       debugPrint("收起键盘。。。");
@@ -492,7 +493,7 @@ abstract class BaseLoadListDataState<T extends BasePage, VM extends BaseLoadList
 
 class BasePageConfig extends InheritedWidget {
   final PageConfigData data;
-  BasePageConfig({required Widget child,required this.data}) : super(child: child);
+  BasePageConfig({required Widget child, required this.data}) : super(child: child);
 
   @override
   bool updateShouldNotify(BasePageConfig oldWidget) {

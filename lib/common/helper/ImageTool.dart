@@ -27,7 +27,11 @@ Future<bool> saveImage(ui.Image image) async {
   var result = false;
   if (isGranted) {
     ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    final tmpResult = await ImageGallerySaver.saveImage(byteData?.buffer.asUint8List());
+    dynamic tmpResult = null;
+    if (byteData != null) {
+      tmpResult = await ImageGallerySaver.saveImage(byteData.buffer.asUint8List());
+    }
+
     if (tmpResult != null && tmpResult is String) {
       result = tmpResult.toString().isNotEmpty;
     } else if (tmpResult is bool) {

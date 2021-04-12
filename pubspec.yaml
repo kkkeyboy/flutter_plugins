@@ -39,30 +39,30 @@ dependencies:
   retrofit:
     path: plugins/retrofit_annotation
 
-  webview_flutter: ^2.0.3
-  flutter_webview_plugin: ^0.3.11
+  # webview_flutter: ^2.0.3
+  # flutter_webview_plugin: ^0.3.11
 
   package_info: ^2.0.0
 
-  flutter_swiper: ^1.1.6
-  wc_flutter_share: ^0.4.0 #分享
-  provider: ^5.0.0 #State
+  # flutter_swiper: ^1.1.6
+  # wc_flutter_share: ^0.4.0 #分享
+  # provider: ^5.0.0 #State
 
     #元组
-  tuple: ^2.0.0
+  # tuple: ^2.0.0
 
   url_launcher: ^6.0.3 #启动第三方app
 
-  dio_cookie_manager: ^2.0.0
-  cookie_jar: ^3.0.1
+  # dio_cookie_manager: ^2.0.0
+  # cookie_jar: ^3.0.1
   shared_preferences: ^2.0.5 #本地json对象存储
   localstorage: ^4.0.0+1 
 
   #网络变化
   connectivity: ^3.0.3
   permission_handler: ^6.1.1
-  image_picker: ^0.7.4 
-  qr_code_scanner: ^0.4.0
+  # image_picker: ^0.7.4 
+  # qr_code_scanner: ^0.4.0
   image_gallery_saver: ^1.6.8 
 
   cupertino_icons: ^1.0.2
