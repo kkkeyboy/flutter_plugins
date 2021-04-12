@@ -20,12 +20,10 @@ class JsonModel {
     imports_raw = dartDeclarations.getImportRaw();
     enums = dartDeclarations.getEnums(className);
     nestedClasses = dartDeclarations.getNestedClasses();
-    print("1111:->${this}");
   }
 
   // model string from json map
   static JsonModel fromMap(String fileName,String className, Map jsonMap) {
-     print("1111-2:->${fileName},${className}");
     var dartDeclarations = <DartDeclaration>[];
     jsonMap.forEach((key, value) {
       var declaration = DartDeclaration.fromKeyValue(key, value, fileName: fileName,className:className);
